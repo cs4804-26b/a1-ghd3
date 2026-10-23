@@ -9,11 +9,160 @@
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script>
     console.log("d3 version", d3.version); // test that d3 loaded
+
     // Add an SVG
+    const svg = d3.select("body")
+      .append("svg")
+      .attr("viewBox", "0 0 1920 1200")
+      .style("width", "100%")
+      .style("height", "auto");
+
+    var data = [{x: 0, y: 425}, {x: 100, y: 550}, {x: 250, y: 500}, {x: 350, y: 455}, {x: 400, y: 600}]
+
+    const gradientColor = svg.append("linearGradient")
+                          .attr("id", "myGradient")
+                          .attr("x1", "0%")
+                          .attr("y1", "0%")
+                          .attr("x2", "100%")
+                          .attr("y2", "0%");
+
+    gradientColor.append("stop")
+      .attr("offset", "0%")
+      .attr("stop-color", "#ec930e") // orange
+      .attr("stop-opacity", 1);
+
+    gradientColor.append("stop")
+      .attr("offset", "100%")
+      .attr("stop-color", "#0ee5ec") // orange
+      .attr("stop-opacity", 1);
+
+    function drawCar() {
+    const car = svg.append("g").attr("class", "car");
+
     // Add Rectangles
+    car.append('rect')
+      .attr('x', 50)
+      .attr('y', 140)
+      .attr('width', 500)
+      .attr('height', 80)
+      .attr('stroke', 'none')
+      .attr('fill', '#69a3b2')
+    
     // Add Circles
+    car.append('circle')
+    .attr('cx', 100)
+    .attr('cy', 250)
+    .attr('r', 50)
+    .attr('stroke', 'black')
+    .attr('fill', '#191a1a')
+
+    car.append('circle')
+    .attr('cx', 495)
+    .attr('cy', 250)
+    .attr('r', 50)
+    .attr('stroke', 'black')
+    .attr('fill', '#191a1a')
+
+    car.append('line')
+    .attr('x1', 490)
+    .attr('y1', 140)
+    .attr('x2', 350)
+    .attr('y2', 50)
+    .attr('stroke', 'black')
+    .attr('fill', '#69a3b2')
+
+    car.append('line')
+    .attr('x1', 350)
+    .attr('y1', 140)
+    .attr('x2', 350)
+    .attr('y2', 50)
+    .attr('stroke', 'black')
+    .attr('fill', '#69a3b2')
+
+    car.append('rect')
+      .attr('x', 50)
+      .attr('y', 50)
+      .attr('width', 300)
+      .attr('height', 100)
+      .attr('stroke', 'none')
+      .attr('fill', '#69a3b2')
+
+      return car;
+    }
+
+    function animateCar() {
+      drawCar()
+        .transition()
+        .delay(1000)
+        .duration(6000)
+        .ease(d3.easeLinear)
+        .attr("transform", "translate(1200, 0)");
+    }
+
+    animateCar();
+
     // Add Lines
+    // straight line
+    svg.append('line')
+      .attr('x1', 0)
+      .attr('y1', 300)
+      .attr('x2', 1920)
+      .attr('y2', 300)
+      .attr('stroke', 'black')
+
+    function drawGraph() {
+      // curved
+      var curveFunc = d3.line()
+      .curve(d3.curveBasis)
+      .x(function(d) {return d.x})
+      .y(function(d) {return d.y})
+
+      var curveFunc2 = d3.line()
+      .curve(d3.curveStep)
+      .x(function(d) {return d.x})
+      .y(function(d) {return d.y})
+
+      svg.append('path')
+      .attr('d', curveFunc(data))
+      .attr("transform", "translate(750, 600)")
+      .attr("fill", "none")
+      .attr("stroke", "black")
+
+      svg.append('path')
+      .attr('d', curveFunc2(data))
+      .attr("transform", "translate(750, 600)")
+      .attr("fill", "none")
+      .attr("stroke", "black")
+    }
+
+    drawGraph();
+
+
     // Add Polygons
+    const scaleX = d3.scaleLinear()
+      .domain(d3.extent(data, d => d.x))
+      .range([660, 1260]);
+    const scaleY = d3.scaleLinear()
+      .domain(d3.extent(data, d => d.y))
+      .range([800, 400]);
+            
+    svg.selectAll("polygon")
+    .data([data])
+    .enter()
+    .append("polygon")
+    .attr("points", d =>
+      d.map(p => [scaleX(p.x), scaleY(p.y)].join(",")).join(" ")
+    )
+    .attr("stroke", "black")
+    .attr("stroke-width", 2)
+    .attr("fill", "url(#myGradient)")
+    .transition()
+    .duration(5000)
+    .ease(d3.easeLinear)
+    .attrTween("transform", () => {
+      const angle = d3.interpolateNumber(0, 360);
+      return t => `rotate(${angle(t)} 960 600)`;
+    });
   </script>
 </body>
 </html>
