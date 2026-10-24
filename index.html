@@ -3,17 +3,175 @@
 <head>
   <meta charset="utf-8">
   <title>A1: Hello World, GitHub and d3</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    svg { display: block; }
+  </style>
 </head>
 <body>
   <div id="container"></div>
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script>
     console.log("d3 version", d3.version); // test that d3 loaded
-    // Add an SVG
     // Add Rectangles
     // Add Circles
     // Add Lines
     // Add Polygons
+
+    // drawing of the up house!!
+    const width = 100;
+    const height = 100;
+
+    // i added these funcitons cause doing it out every time made the code super long for what I was trying to make
+    function addCircle(svg, x, y, r, color){
+      svg.append("circle")
+      .attr("cx", x).attr("cy", y)
+      .attr("r", r)
+      .attr("fill", color)
+      .on("mouseover", function(event, d) {
+        d3.select(this)
+            .transition()
+            .duration(200)
+            .attr("fill", d3.interpolateRgb(color, "white")(0.5)); //makes it get lighter
+      })
+    .on("mouseout", function(event, d) {
+        d3.select(this)
+            .transition()
+            .duration(200)
+            .delay(1000)
+            .attr("fill", color);
+      });
+    }
+
+    function addLine(svg, x1, y1, x2, y2, color, width){
+      svg.append("line")
+      .attr("x1", x1).attr("x2", x2)
+      .attr("y1", y1).attr("y2", y2)
+      .attr("stroke", color).attr("stroke-width", width)
+    }
+
+    function addRectangle(svg, x, y, w, h, color){
+      svg.append("rect")
+      .attr("x", x).attr("y", y)
+      .attr("width", w).attr("height", h)
+      .attr("fill", color)
+    }
+
+    function addPolygon(svg, points, color) {
+      svg.append("polygon")
+      .attr("points", points)
+      .attr("fill", color);
+    }
+
+    function addCloud(svg, x, y, rx, ry, color){
+      svg.append("ellipse")
+      .attr("cx", x).attr("cy", y)
+      .attr("rx", rx).attr("ry", ry)
+      .attr("fill", color)
+    }
+
+    //Create SVG 
+    const s = 5;
+    var svg = d3.select("body")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("transform", `matrix(${s}, 0, 0, ${-s}, 0, 0)`);
+
+    // add shapes!!
+    //connect the balloons
+    addLine(svg, 51, 46, 61, 55.5, "gray", .5)
+    addLine(svg, 50, 46, 56, 53.5, "gray", .5)
+    addLine(svg, 49.5, 46, 50, 51.5, "gray", .5)
+    addLine(svg, 49, 46, 44, 53, "gray", .5)
+    addLine(svg, 48, 46, 39, 55.5, "gray", .5)
+
+    //balloons
+    addCircle(svg, 42, 88, 5, "lightgreen")
+    addCircle(svg, 58, 88, 5, "red")
+    addCircle(svg, 50, 75, 5, "gold") //center
+    addCircle(svg, 35, 75, 5, "mediumturquoise")
+    addCircle(svg, 37, 82, 5, "lemonchiffon")
+    addCircle(svg, 65, 75, 5, "purple")
+    addCircle(svg, 50, 56, 5, "pink")
+    addCircle(svg, 39, 60, 5, "orange")
+    addCircle(svg, 61, 60, 5, "lightgreen")
+
+    addCircle(svg, 42, 80, 5, "lightblue")
+    addCircle(svg, 57, 82, 5, "plum")
+    addCircle(svg, 62, 80, 5, "darkseagreen")
+    addCircle(svg, 37, 69, 5, "coral")
+    addCircle(svg, 66, 67, 5, "thistle")
+    addCircle(svg, 52, 66, 6, "bisque")
+    addCircle(svg, 44, 63, 5, "cornflowerblue")
+
+    addCircle(svg, 43, 72, 5, "red")
+    addCircle(svg, 44, 58, 5, "plum")
+    addCircle(svg, 55, 58, 5, "lightblue")
+    addCircle(svg, 58, 69, 5, "lightseagreen")
+    addCircle(svg, 47, 69, 5, "lightgreen")
+    addCircle(svg, 50, 89, 5, "sandybrown")
+    addCircle(svg, 49, 82, 5, "pink")
+    addCircle(svg, 57, 75, 5, "coral")
+    
+
+
+
+    //house base
+    addPolygon(svg, "29, 40 69, 40 74, 25 24, 25", "slategray") //roof
+    addRectangle(svg, 28, 5, 42, 20, "mistyrose") //base wall 
+    addRectangle(svg, 28, 20, 22, 5, "lightblue") //thick lip
+    addPolygon(svg, "45, 22 60, 48 73, 22", "skyblue") //base triangle
+    addRectangle(svg, 48, 40, 3, 6.6, "darksalmon") //chiminy
+    addRectangle(svg, 47, 20, 25, 2, "darkkhaki") //lip
+
+    addRectangle(svg, 49, 5, 21, 15, "darkseagreen") //sunroom wall
+    addPolygon(svg, "47, 22 60, 45 71, 22", "palegoldenrod") //inner triangle
+
+    addRectangle(svg, 28, 5, 21, 2, "pink")//base floor
+    addRectangle(svg, 49, 5, 21, 2, "green")//sunroom floor
+
+    //windows
+    addRectangle(svg, 30, 10, 4, 6, "lightblue")
+    addRectangle(svg, 51, 9, 3, 7, "lightblue")
+    addRectangle(svg, 57, 9, 5, 7, "lightblue")
+    addRectangle(svg, 65, 9, 3, 7, "lightblue")
+    addRectangle(svg, 57, 26, 5, 7, "lightblue")
+
+    addRectangle(svg, 40, 7, 6, 11, "#964B00") //door
+
+    //extra lil window space
+    addPolygon(svg, "35, 29 35, 37 38.5, 42 42, 37 42, 29", "palegoldenrod")
+    addRectangle(svg, 37, 31, 3, 4, "lightblue")
+    addLine(svg, 33, 34, 38.8, 43, "skyblue", 1.5)
+    addLine(svg, 44, 34, 38.2, 43, "skyblue", 1.5) 
+
+    // cloud 1
+    addCloud(svg, 14, 88, 9, 4, "#c8def2")
+    addCloud(svg, 7, 86, 6, 3.5, "#bcd6ee")
+    addCloud(svg, 21, 86, 6, 3.5, "#c2dbf0")
+    addCloud(svg, 11, 91, 6, 4, "#d4e6f7")
+    addCloud(svg, 18, 91, 5, 3.5, "#d0e3f5")
+
+    // cloud 2
+    addCloud(svg, 86, 85, 9, 4, "#c8def2")
+    addCloud(svg, 80, 83.5, 6, 3.5, "#bcd6ee")
+    addCloud(svg, 91, 88, 6, 3.5, "#d4e6f7")
+
+    // cloud 3
+    addCloud(svg, 13, 60, 8, 3.5, "#c2dbf0")
+    addCloud(svg, 17, 63, 5, 3, "#d4e6f7")
+
+    // cloud 4
+    addCloud(svg, 86, 60, 8, 3.5, "#c2dbf0")
+    addCloud(svg, 91, 63, 4.5, 3, "#d4e6f7")
   </script>
+
 </body>
 </html>
