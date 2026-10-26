@@ -3,17 +3,259 @@
 <head>
   <meta charset="utf-8">
   <title>A1: Hello World, GitHub and d3</title>
+  <link rel="stylesheet" href="index.css">
 </head>
 <body>
   <div id="container"></div>
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script>
     console.log("d3 version", d3.version); // test that d3 loaded
-    // Add an SVG
-    // Add Rectangles
-    // Add Circles
-    // Add Lines
-    // Add Polygons
+    // Declare the chart dimensions and margins.
+    const width = 640;
+    const height = 400;
+    const marginTop = 20;
+    const marginRight = 20;
+    const marginBottom = 30;
+    const marginLeft = 40;
+
+    // Declare the x (horizontal position) scale.
+    const x = d3.scaleUtc()
+        .domain([marginLeft, width - marginRight])
+        .range([marginLeft, width - marginRight]);
+
+    // Declare the y (vertical position) scale.
+    const y = d3.scaleLinear()
+        .domain([height - marginBottom, marginTop])
+        .range([height - marginBottom, marginTop]);
+
+    // Create the SVG container.
+    const svg = d3.create("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    // Add the x-axis.
+    svg.append("g")
+        .attr("transform", `translate(0,${height - marginBottom})`)
+        .call(d3.axisBottom(x));
+
+    // Add the y-axis.
+    svg.append("g")
+        .attr("transform", `translate(${marginLeft},0)`)
+        .call(d3.axisLeft(y));
+
+    //functions to make it so that shapes move when hovered over
+    var mouseover = function(d) {
+      d3.select(this)
+        .classed("moving", true)
+    }
+
+    var mouseout = function(d) {
+      d3.select(this)
+        .classed("moving", false)
+    }
+
+    var click = function(d) {
+      d3.select(this)
+        .classed("gravity", !d3.select(this).classed("gravity"))
+    }
+
+    //circle element!
+    svg.append("circle")
+        .attr("cx", 90)
+        .attr("cy", 120)
+        .attr("r", 20)
+        .attr("fill", "#7EFFC0")
+        .attr("stroke", "#3e8060") //same color, just darkened
+        .attr("stroke-dasharray", "4 2") 
+        .attr("stroke-width", 2)
+        .on("mouseover", mouseover)
+        .on("mouseout", mouseout)
+        .on("click", click)
+        .style("--fall", `${height - marginBottom - (120 + 20)}px`); //css style for gravity
+
+    //rectangle element!
+    svg.append("rect")
+        .attr("x", 160)
+        .attr("y", marginTop + 10)
+        .attr("width", 70)
+        .attr("height", 20)
+        .attr("fill", "#FFA37D")
+        .on("mouseover", mouseover)
+        .on("mouseout", mouseout)
+        .on("click", click)
+        .style("--fall", `${height - marginBottom - (marginTop + 10 + 20)}px`); //css style for gravity
+
+    //line element!
+    svg.append("line")
+        .attr("x1", 300)
+        .attr("y1", 220)
+        .attr("x2", 330)
+        .attr("y2", 240)
+        .attr("stroke", "#678074")
+        .attr("stroke-width", 4)
+        .on("mouseover", mouseover)
+        .on("mouseout", mouseout)
+        .on("click", click)
+        .style("--fall", `${height - marginBottom - (240 + 2)}px`); //css style for gravity
+
+    //polygon element!
+    svg.append("polygon")
+        .attr("points", "500,150 550,100 575,150 550,200 525,180")
+        .attr("fill", "#FF7D95")
+        .on("mouseover", mouseover)
+        .on("mouseout", mouseout)
+        .on("click", click)
+        .style("--fall", `${height - marginBottom - 200}px`); //css style for gravity
+
+    // Append the SVG element.
+    container.append(svg.node());
+
+    // smiley face time! going to be an image underneath the graph
+    // Declare the x (horizontal position) scale.
+    const x2 = d3.scaleUtc()
+        .domain([marginLeft, width - marginRight])
+        .range([marginLeft, width - marginRight]);
+
+    // Declare the y (vertical position) scale.
+    const y2 = d3.scaleLinear()
+        .domain([height - marginBottom, marginTop])
+        .range([height - marginBottom, marginTop]);
+
+    // Create the SVG container.
+    const svg2 = d3.create("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    //right eyebrow
+    svg2.append("rect")
+        .attr("x", 65)
+        .attr("y", 80)
+        .attr("width", 50)
+        .attr("height", 10)
+        .attr("fill", "#FFA37D")
+        .on("mouseover", mouseover)
+        .on("mouseout", mouseout)
+        .on("click", click)
+        .style("--fall", `${height - marginBottom - (80 + 10)}px`);
+
+    //left eyebrow
+    svg2.append("rect")
+        .attr("x", 175)
+        .attr("y", 80)
+        .attr("width", 50)
+        .attr("height", 10)
+        .attr("fill", "#FFA37D")
+        .on("mouseover", mouseover)
+        .on("mouseout", mouseout)
+        .on("click", click)
+        .style("--fall", `${height - marginBottom - (80 + 10)}px`);
+
+    //right eye
+    svg2.append("ellipse")
+        .attr("cx", 90)
+        .attr("cy", 120)
+        .attr("rx", 40)
+        .attr("ry", 20)
+        .attr("fill", "#7EFFC0")
+        .attr("stroke", "#3e8060") //same color, just darkened
+        .attr("stroke-dasharray", "4 2") 
+        .attr("stroke-width", 2)
+        .on("mouseover", mouseover)
+        .on("mouseout", mouseout)
+        .on("click", click)
+        .style("--fall", `${height - marginBottom - (120 + 20)}px`);
+
+    //right iris
+    svg2.append("circle")
+        .attr("cx", 90)
+        .attr("cy", 120)
+        .attr("r", 20)
+        .attr("fill", "#7EFFC0")
+        .attr("stroke", "#3e8060") //same color, just darkened
+        .attr("stroke-dasharray", "4 2") 
+        .attr("stroke-width", 2)
+        .on("mouseover", mouseover)
+        .on("mouseout", mouseout)
+        .on("click", click)
+        .style("--fall", `${height - marginBottom - (120 + 20)}px`);
+
+    //left eye
+    svg2.append("ellipse")
+        .attr("cx", 200)
+        .attr("cy", 120)
+        .attr("rx", 40)
+        .attr("ry", 20)
+        .attr("fill", "#7EFFC0")
+        .attr("stroke", "#3e8060") //same color, just darkened
+        .attr("stroke-dasharray", "4 2") 
+        .attr("stroke-width", 2)
+        .on("mouseover", mouseover)
+        .on("mouseout", mouseout)
+        .on("click", click)
+        .style("--fall", `${height - marginBottom - (120 + 20)}px`);
+
+    //left iris
+    svg2.append("circle")
+        .attr("cx", 200)
+        .attr("cy", 120)
+        .attr("r", 20)
+        .attr("fill", "#7EFFC0")
+        .attr("stroke", "#3e8060") //same color, just darkened
+        .attr("stroke-dasharray", "4 2") 
+        .attr("stroke-width", 2)
+        .on("mouseover", mouseover)
+        .on("mouseout", mouseout)
+        .on("click", click)
+        .style("--fall", `${height - marginBottom - (120 + 20)}px`);
+
+    //nose
+    svg2.append("polygon")
+        .attr("points", "145,150 160,190 130,190")
+        .attr("fill", "#FF7D95")
+        .on("mouseover", mouseover)
+        .on("mouseout", mouseout)
+        .on("click", click)
+        .style("--fall", `${height - marginBottom - 190}px`);
+
+    //smile
+    svg2.append("path")
+        .attr("d", "M 70,200 A 75,40 0 0 0 220,200")
+        .attr("stroke", "#678074")
+        .attr("stroke-width", 4)
+        .attr("fill", "none")
+        .on("mouseover", mouseover)
+        .on("mouseout", mouseout)
+        .on("click", click)
+        .style("--fall", `${height - marginBottom - (240 + 2)}px`);
+
+    //hair
+    svg2.append("path")
+        .attr("id", "hair-path")
+        .attr("d", "M 40,80 A 105,50 0 0 1 250,80")
+        .attr("fill", "none");
+
+    svg2.append("text")
+        .on("mouseover", mouseover)
+        .on("mouseout", mouseout)
+        .on("click", click)
+        .style("--fall", `${height - marginBottom - (80)}px`)
+        .append("textPath")
+            .attr("href", "#hair-path") 
+            .text("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+
+    // the ground, so that gravity makes a little bit of sense
+    svg2.append("line")
+        .attr("x1", 20)
+        .attr("y1", height - marginBottom)
+        .attr("x2", 280)
+        .attr("y2", height - marginBottom)
+        .attr("stroke", "#678074")
+        .attr("stroke-width", 1);
+
+
+    // Append the SVG element.
+    container.append(svg2.node());
+
   </script>
 </body>
 </html>

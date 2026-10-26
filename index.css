@@ -1,0 +1,33 @@
+.moving {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: rotate 5s linear infinite;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.gravity {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: gravity 1s ease-in forwards;
+}
+
+@keyframes gravity {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(var(--fall));
+    }
+}
+
+body {
+    background-color: #806E67
+}
