@@ -3,17 +3,180 @@
 <head>
   <meta charset="utf-8">
   <title>A1: Hello World, GitHub and d3</title>
+  <link href="https://fonts.cdnfonts.com/css/bauhaus-93" rel="stylesheet">
 </head>
 <body>
   <div id="container"></div>
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script>
     console.log("d3 version", d3.version); // test that d3 loaded
-    // Add an SVG
+    
+    // Canvas dimensions
+    const width = 520;
+    const height = 755;
+
+    // Add an SVG to container
+    const svg = d3.select("#container")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .style("border", "1px solid black")
+      .style("background-color", "#fefbec");
+    
     // Add Rectangles
+    svg.append("rect")
+      .attr("x", 260)
+      .attr("y", 145)
+      .attr("width", 200)
+      .attr("height", 100)
+      .attr("fill", "#dc2825");
+
+    svg.append("rect")
+      .attr("x", 360)
+      .attr("y", 245)
+      .attr("width", 100)
+      .attr("height", 200)
+      .attr("fill", "black");
+
+    svg.append("rect")
+      .attr("x", 260)
+      .attr("y", 345)
+      .attr("width", 100)
+      .attr("height", 100)
+      .attr("fill", "#dc2825");
+
+    svg.append("rect")
+      .attr("x", 260)
+      .attr("y", 445)
+      .attr("width", 100)
+      .attr("height", 100)
+      .attr("fill", "black");
+
+    svg.append("rect")
+      .attr("x", 60)
+      .attr("y", 445)
+      .attr("width", 100)
+      .attr("height", 100)
+      .attr("fill", "#0965b5");
+
+
     // Add Circles
+    svg.append("circle")
+      .attr("cx", 310)
+      .attr("cy", 95)
+      .attr("r", 50)
+      .attr("fill", "#0965b5")
+      .on("mouseover", function(event, d) {
+        d3.select(this)
+          .raise()
+          .transition()
+          .duration(150)
+          .attr("r", 60);
+      })
+      .on("mouseout", function(event, d) {
+        d3.select(this)
+          .transition()
+          .duration(150)
+          .attr("r", 50);
+      });
+
+    svg.append("circle")
+      .attr("cx", 110)
+      .attr("cy", 195)
+      .attr("r", 50)
+      .attr("fill", "#dc2825")
+      .on("mouseover", function(event, d) {
+        d3.select(this)
+          .raise()
+          .transition()
+          .duration(150)
+          .attr("r", 60);
+      })
+      .on("mouseout", function(event, d) {
+        d3.select(this)
+          .transition()
+          .duration(150)
+          .attr("r", 50);
+      });
+
+    svg.append("circle")
+      .attr("cx", 210)
+      .attr("cy", 495)
+      .attr("r", 50)
+      .attr("fill", "#dc2825").on("mouseover", function(event, d) {
+        d3.select(this)
+          .raise()
+          .transition()
+          .duration(150)
+          .attr("r", 60);
+      })
+      .on("mouseout", function(event, d) {
+        d3.select(this)
+          .transition()
+          .duration(150)
+          .attr("r", 50);
+      });
+
+
     // Add Lines
+
+    // Use horizontal lines for smaller text
+    for (let i = 0; i <= 5; i++) {
+      svg.append("line")
+        .attr("x1", 30)
+        .attr("y1", 650 + i * 12)
+        .attr("x2", i === 5 ? 145 : 300)
+        .attr("y2", 650 + i * 12)
+        .attr("stroke", "black")
+        .attr("stroke-width", 5);
+    }
+
+    svg.append("line")
+      .attr("x1", 395)
+      .attr("y1", 710)
+      .attr("x2", 450)
+      .attr("y2", 710)
+      .attr("stroke", "black")
+      .attr("stroke-width", 5);
+
+
     // Add Polygons
+    svg.append("polygon")
+      .attr("points", "160,45 260,45 260,245 360,245 360,345 160,345")
+      .attr("fill", "#ffc72c")
+
+
+    // Add Text
+
+    // Define font
+    const defs = svg.append("defs");
+    defs.append("style")
+      .attr("type", "text/css")
+      .text(`
+        @font-face {
+          font-family: 'Bauhaus 93';
+          font-style: normal;
+          font-weight: 400;
+          src: local('Bauhaus 93'), url('https://cdnfonts.com') format('woff');
+        }
+      `);
+
+    svg.append("text")
+      .attr("x", 30)
+      .attr("y", 560 + 48)
+      .attr("font-size", "48px")
+      .attr("fill", "black")
+      .attr("font-family", "'Bauhaus 93', sans-serif")
+      .text("BAUHAUS AUSTELLUNG");
+
+    svg.append("text")
+      .attr("x", 388)
+      .attr("y", 698)
+      .attr("font-size", "40px")
+      .attr("fill", "black")
+      .attr("font-family", "'Bauhaus 93', sans-serif")
+      .text("1923");
+
   </script>
 </body>
 </html>

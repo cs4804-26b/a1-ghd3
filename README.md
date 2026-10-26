@@ -1,87 +1,30 @@
 Assignment 1 - Hello World: GitHub and d3  
 ===
+## Site Link
+https://logankippnick.github.io/a1-ghd3/
 
-This is a starting project to make sure you can write and host a webpage that generates graphics using d3. 
+## Background
+When I first saw that this assignment was basically just shapes and colors, my mind immediately went to the Bauhaus movement, which I have studied a decent amount and gained an appreciation for through my German classes and my IQP in Berlin. Bauhaus was a school for designers in Weimar, Germany that then flourished as a progressive school of thought between the two World Wars. It focused on simplicity, eliminating excess ornamentation to help make a new, higher standard of living more accesible. I knew I'd be able to find a poster from a Bauhuas exibition that I could use to satisfy the requirements of this assignment, and the one I found was perfect. The image below is the poster I designed using d3.
 
-The primary goal is to be able to generate graphics primitives (circles, rectangles, lines, polygons) at different locations on the screen with different colors. 
+![Poster from a Bauhaus exhibition](https://cdng.europosters.eu/pod_public/1300/201637.jpg)
 
-The secondary goals are to 1) introduce you to coding on GitHub, including publishing your visualizations with GitHub Pages, and 2) teach you how to host your web-based visualizations on a web-server, which opens up a world of possibilities.
+## Process and Sources
+I started with the index.html file given in the repository I forked. I then referenced [this website](https://www.dashingd3js.com/d3-tutorial/adding-an-svg-element-using-d3-js) to figure out what "Add an SVG" meant exactly, and went from there. At first I referenced [this website](https://d3-graph-gallery.com/graph/shape.html) to figure out how to add a shape.
 
-You may write everything from scratch, or start with demo programs from books or the web. 
-If you do start with code that you found on any project, you **must identify** the source of the code in your README and, most importantly, make non-trivial changes to the code to make it your own so you really learn what you're doing.
-For AI-generated code, please see the policy in the syllabus.
+![Screenshot of d3-graph-gallery site](ss-d3-graph-gallery.png)
 
-For example, you could download one of the d3.js examples, read it through so you understand what it's doing, and then change the appearance of the graphical output to use different color schemes, different primitive shapes, different layouts of the primitives, and so on.
+Then, the Copilot autofill in VS Code started picking up on what I was doing and basically showed me how to do rectangles, lines, and the yellow polygon.
 
-Resources
----
+![Screenshot of VS Code Copilot autofill](ss-copilot-autofill.png)
 
-If you need a JavaScript/HTML/CSS refresher, see [MDN's Learn web development](https://developer.mozilla.org/en-US/docs/Learn_web_development), [Codecademy's Introduction to JavaScript](https://www.codecademy.com/learn/introduction-to-javascript), or find one of your choosing on the web.
+_I took this screenshot after the fact, deleting the circles so the autofill could suggest them back, so this suggestion was exactly what one of the circles was. Initially, it was just with more "example" values, per se._
 
-If you need a Git/GitHub refresher, some possible resources include GitHub's [Hello World](https://docs.github.com/en/get-started/using-github/hello-world), [GitHub flow](https://docs.github.com/en/get-started/using-github/github-flow), and [Fork a repository](https://docs.github.com/en/pull-requests/how-tos/work-with-forks/fork-a-repo) guides, [GitHub Skills](https://skills.github.com/), and [Learn Git Branching](https://learngitbranching.js.org/).
+I chose to add text, but I figured I'd still show that I learned how to use lines, so I turned the smaller text into horizontal lines. For the actual text, a quick Google search helped me come across the exact font used on the poster. A Gemini Google search response then showed me how to implement this custom font in d3.
 
-Requirements
----
+I then chose to add some sort of interaction. I chose to make the circles grow on hover because I only have to change the radius to do this. Another Gemini Google search response revealed how to do this to me.
 
-1. Your project should contain at least four kinds of graphics primitives (circles, rectangles, lines, polygons) in different colors. 
-2. Your document should identify the sources of the code if you start with code that you found. 
-3. Your code should be forked from the GitHub repo and published with GitHub Pages. See the "GitHub Details" section below for detailed instructions on how to do this.
+## Technical Achievements
+I refreshed myself on how to edit HTML pages, and I learned how to use d3 to add shapes, lines, and text with different colors to one. I then iterated on the existing design by adding a hover animation to some of the shapes. Understanding the basics of d3 will prove very useful for further design work in this course.
 
-GitHub Details
----
-
-- Fork the GitHub Repository for Assignment 1. You now have a copy associated with your username.
-- Make changes to index.html to fulfill the project requirements. 
-- Turn on GitHub Pages for your fork: Settings → Pages → Build and deployment → Source: "Deploy from a branch", Branch: `main`, folder `/ (root)`. See [Configuring a publishing source](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) if you need help. Spend some time learning this if you're new!
-- Edit the README.md with a link to your GitHub Pages site "https://YourUsernameGoesHere.github.io/a1-ghd3/".
-
-Submission Details
----
-- To submit, make a [Pull Request](https://docs.github.com/en/pull-requests/how-tos/create-pull-requests/creating-a-pull-request-from-a-fork) on the original repository.
-- Note: name your pull request using the following scheme: 
-```
-a1-your Gh username-your first name-your lastname
-
-```
-
-Vis Details
----
-
-For this project you should use d3.js. Later projects will use other tools (e.g. Python libraries), but d3 is the industry standard for now.
-You can learn from examples on the [d3.js](https://d3js.org) site or start from scratch.
-
-See [Getting started](https://d3js.org/getting-started) for ways to load d3. To preview your page locally, open index.html in Chrome, or run `python3 -m http.server` in the repo folder and visit http://localhost:8000.
-
-Creative solutions are welcome! In the past I've seen recreations of paintings, interactives, and more.
-
-Please go beyond the minimum requirements of this project-- we've made it SUPER basic so you can explore, or fill in any gaps in your understanding of web coding.
-Experiment with other aspects of the [d3 API](https://d3js.org/api) and the examples in the [D3 gallery](https://observablehq.com/@d3/gallery). 
-Try making the elements interactive, for example, or animate them.
-
-Grading
----
-
-Grades are on a 120 point scale. 
-96 points will be graded for functionality: the program does what the assignment requests with an informative README. 
-
-We will use Google Chrome to view submissions. 
-Be sure to test your code there.
-
-Below are some, but not necessarily all, of the key points we will consider during grading:
-
-- Circles and Rectangles  
-- Lines  
-- Paths  
-- Different colors  
-- README Quality
-    - A description of what you have created. 1-2 screenshots are recommended for the README.  
-    - A working link to the hosted files (your GitHub Pages url)  
-    - Section for Technical and Design Achievements
-
-Technical Achievement Description -- 12  
-Design Achievement Description -- 12
-
-Remember, it is up to *you* to define what constitutes a technical and design achievements.
-Be ambitious as these are designed to allow you to shape your learning.
-These are the only way to move from B to A territory.
-
+## Design Achievements
+I replicated and expanded slighlty on an existing design to gain an understanding and appreciation for it. Each color on the poster is very distinct from every other color, which makes each shape very easy to distinguish. I also learned that our eyes are very sensitive to aligmnent. One pixel made more of a difference than I previously would have thought.
