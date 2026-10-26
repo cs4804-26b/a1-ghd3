@@ -1,6 +1,10 @@
 Assignment 1 - Hello World: GitHub and d3  
 ===
 
+# Assignment 1 Mikayla Bishop
+~ for this assignment i decided to create a picture that used all of the shapes instead of just drawing the shapes in a random order. To incorporate all of the shapes i decided to draw an underwater scene depicting a jellyfish. I did not realize when i started i would need to use a custom shape for the jellyfish body so i had a little trouble using the path to create the shape just because it was not something i had done before. I used rectangles for the plants, circles for the bubbles, lines for the jellyfish tentacles and a polygon for the rock. 
+the finished picture can be found at: https://mikaylabishop7.github.io/a1-ghd3/ 
+
 This is a starting project to make sure you can write and host a webpage that generates graphics using d3. 
 
 The primary goal is to be able to generate graphics primitives (circles, rectangles, lines, polygons) at different locations on the screen with different colors. 
