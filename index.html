@@ -9,11 +9,68 @@
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script>
     console.log("d3 version", d3.version); // test that d3 loaded
+
     // Add an SVG
+    var svg = d3.select("body")
+      .append("svg")
+      .attr("width", 512)
+      .attr("height", 512);
+
     // Add Rectangles
+    svg.append("rect")
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("width", 512)
+      .attr("height", 512)
+      .style("fill", "#b0fcfc");
+    svg.append("rect")
+      .attr("x", 0)
+      .attr("y", 340)
+      .attr("width", 512)
+      .attr("height", 256)
+      .style("fill", "#015419");
+
     // Add Circles
+    var sunRadius = 170;
+    svg.append("circle")
+      .attr("cx", 0)
+      .attr("cy", 0)
+      .attr("r", sunRadius)
+      .style("fill", "#f1fc7e");
+    svg.append("circle")
+      .attr("cx", 80)
+      .attr("cy", 360)
+      .attr("r", 60)
+      .style("fill", "#015419");
+    svg.append("circle")
+      .attr("cx", 150)
+      .attr("cy", 360)
+      .attr("r", 80)
+      .style("fill", "#015419");
+
     // Add Lines
+    var rayCount = 12;
+    var rayLength = 50;
+    for (var i = 0; i <= rayCount; i++) {
+      var angle = (Math.PI / 2) * (i / rayCount);
+      var x1 = Math.cos(angle) * sunRadius;
+      var y1 = Math.sin(angle) * sunRadius;
+      var x2 = Math.cos(angle) * (sunRadius + rayLength);
+      var y2 = Math.sin(angle) * (sunRadius + rayLength);
+      svg.append("line")
+        .attr("x1", x1)
+        .attr("y1", y1)
+        .attr("x2", x2)
+        .attr("y2", y2)
+        .style("stroke", "#f1fc7e");
+    }
+
     // Add Polygons
+    svg.append("polygon")
+      .attr(
+        "points", 
+        "300,340 320,300 340,280 360,270 400,290 450,300 490,340"
+      ).style("fill", "#443300");
   </script>
 </body>
 </html>
