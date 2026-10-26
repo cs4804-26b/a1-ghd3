@@ -1,19 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
+
+
 <head>
-  <meta charset="utf-8">
-  <title>A1: Hello World, GitHub and d3</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>A1: Hello World, GitHub and d3</title>
+	<link rel="stylesheet" href="style.css">
 </head>
+
+
 <body>
-  <div id="container"></div>
-  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-  <script>
-    console.log("d3 version", d3.version); // test that d3 loaded
-    // Add an SVG
-    // Add Rectangles
-    // Add Circles
-    // Add Lines
-    // Add Polygons
-  </script>
+	<h1>Constellation Generator</h1>
+
+	<p>
+		Each constellation has 3-8 randomly positioned stars with different
+		shapes and colors. Click the button to generate a new constellation.
+	</p>
+
+	<button id="refresh">Generate New Constellation</button>
+
+	<div id="container"></div>
+
+	<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+
+	<script>
+		console.log("d3 version", d3.version); // test that d3 loaded
+
+		const svg = d3.select("#container")
+			.append("svg")
+			.attr("viewBox", "0 0 600 400")
+			.attr("preserveAspectRatio", "xMidYMid meet");
+
+		// store star's position, shape, color
+		const shapes = ["circle", "rect", "triangle"];
+		const colors = ["#D3F8E2", "#E4C1F9", "#F694C1", "#EDE7B1", "#A9DEF9"];
+
+		const minStars = 3;
+		const maxStars = 8;
+
+		const minDistance = 35;
+		const maxAttempts = 100;
+
+		const starCount =
+			Math.floor(Math.random() * (maxStars - minStars + 1)) + minStars;
+
+		const stars = [];
+
+		let attempts = 0;
+
+		while (stars.length < starCount && attempts < maxAttempts) {
+			attempts++;
+
+			const x = 20 + Math.random() * 560;
+			const y = 20 + Math.random() * 360;
+
+			let tooClose = false;
+
+			for (const star of stars) {
+				const distance = Math.hypot(x - star.x, y - star.y);
+
+				if (distance < minDistance) {
+					tooClose = true;
+					break;
+				}
+			}
+
+			if (!tooClose) {
+				stars.push({
+					x: x,
+					y: y,
+					shape: shapes[Math.floor(Math.random() * shapes.length)],
+					color: colors[Math.floor(Math.random() * colors.length)]
+				});
+			}
+		}
+
+		stars.sort((a, b) => a.x - b.x);
+
+		// stars fading in and out, "twinkling"
+		function twinkle(star) {
+			star.transition()
+				.duration(1500 + Math.random() * 1000)
+				.ease(d3.easeSinInOut)
+				.attr("opacity", 0.7)
+				.transition()
+				
+				.duration(1500 + Math.random() * 1000)
+				.ease(d3.easeSinInOut)
+				.attr("opacity", 1)
+				.on("end", function() {
+					twinkle(d3.select(this));
+				});
+		}
+
+		// draw connecting lines
+		for (let i = 0; i < stars.length - 1; i++) {
+			svg.append("line")
+				.attr("x1", stars[i].x)
+				.attr("y1", stars[i].y)
+				.attr("x2", stars[i + 1].x)
+				.attr("y2", stars[i + 1].y)
+				.attr("stroke", "white")
+				.attr("stroke-width", 2);
+		}
+
+		// draw stars
+		for (const star of stars) {
+			if (star.shape === "circle") {
+				svg.append("circle")
+					.attr("cx", star.x)
+					.attr("cy", star.y)
+					.attr("r", 8)
+					.attr("fill", star.color)
+					.call(twinkle);
+
+			} else if (star.shape === "rect") {
+				svg.append("rect")
+					.attr("x", star.x - 8)
+					.attr("y", star.y - 8)
+					.attr("width", 16)
+					.attr("height", 16)
+					.attr("fill", star.color)
+					.call(twinkle);
+
+			} else if (star.shape === "triangle") {
+				svg.append("polygon")
+					.attr("points", `
+						${star.x},${star.y - 10}
+						${star.x - 10},${star.y + 10}
+						${star.x + 10},${star.y + 10}
+					`)
+					.attr("fill", star.color)
+					.call(twinkle);
+			}
+		}
+
+		d3.select("#refresh").on("click", function() {
+			window.location.reload();
+		});
+
+	</script>
+
 </body>
 </html>
