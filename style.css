@@ -1,0 +1,59 @@
+body {
+  background-color: lightgrey;
+}
+
+p {
+  font-size: 20px;
+  font-color: "black";
+}
+
+#container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1em;
+}
+
+#border {
+  fill: none;
+  stroke: black;
+  stroke-width: 10px;
+}
+
+#circle {
+  fill: none;
+  stroke: black;
+  stroke-width: 4px;
+}
+
+.label {
+  fill: black;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+}
+
+.major {
+  font-size: 4em;
+}
+
+.minor {
+  font-size: 3em;
+}
+
+.text {
+  font-size: 2em;
+  font-color: "black";
+}
+
+.lines {
+  stroke-width: 2px;
+}
+
+.clicked {
+  stroke-width: 4px;
+}
+
+.hidden {
+  display: none;
+}
