@@ -10,10 +10,110 @@
   <script>
     console.log("d3 version", d3.version); // test that d3 loaded
     // Add an SVG
+    const svg = d3.select("#container")
+      .append("svg")
+      .attr("width", 960)
+      .attr("height", 540);
+      
     // Add Rectangles
-    // Add Circles
+    // Background
+    svg.append("rect")
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("width", 960)
+      .attr("height", 540)
+      .attr("fill", "#7D4A00");
+
+    // Ground
+    svg.append("rect")
+      .attr("x", 0)
+      .attr("y", 450)
+      .attr("width", 960)
+      .attr("height", 100)
+      .attr("fill", "#4a3204");
+
+    // Stem
+    svg.append("rect")
+      .attr("x", 455)
+      .attr("y", 100)
+      .attr("width", 50)
+      .attr("height", 90)
+      .attr("fill", "#030d01");
+
+    // Circles
+    // Center
+    svg.append("circle")
+      .attr("cx", 480)
+      .attr("cy", 300)
+      .attr("r", 170)
+      .attr("fill", "#f28c28");
+    
+    // Left
+    svg.append("circle")
+      .attr("cx", 430)
+      .attr("cy", 300)
+      .attr("r", 170)
+      .attr("fill", "#db771f");
+
+    // Right
+    svg.append("circle")
+      .attr("cx", 530)
+      .attr("cy", 300)
+      .attr("r", 170)
+      .attr("fill", "#db771f");
+
     // Add Lines
+    // Vine
+    svg.append("line")
+      .attr("x1", 500)
+      .attr("y1", 120)
+      .attr("x2", 540)
+      .attr("y2", 90)
+      .attr("stroke", "green")
+      .attr("stroke-width", 6);
+    
+    // Mouth
+    svg.append("line")
+      .attr("class", "mouth")
+      .attr("x1", 350)
+      .attr("y1", 390)
+      .attr("x2", 610)
+      .attr("y2", 390)
+      .attr("stroke", "black")
+      .attr("stroke-width", 18);
+
     // Add Polygons
+    // Leaf
+    svg.append("polygon")
+      .attr("points", "520, 90 550, 70 580, 90 550, 110")
+      .attr("fill", "green");
+    
+    // Left eye
+    svg.append("polygon")
+      .attr("class", "face")
+      .attr("points", "340, 270 400, 180 460, 270")
+      
+
+    // Right eye
+    svg.append("polygon")
+      .attr("class", "face")
+      .attr("points", "500, 270 560, 180 620, 270")
+    
+    // Nose
+    svg.append("polygon")
+      .attr("class", "face")
+      .attr("points", "480, 250 510, 360 450, 360")
+
+    let lit = false;
+    svg.on("click", function() {
+      lit = !lit;
+      d3.selectAll(".face")
+        .attr("fill", lit ? "#ebc634" : "black");
+
+      d3.selectAll(".mouth")
+        .attr("stroke", lit ? "#ebc634" : "black");
+    });
+
   </script>
 </body>
 </html>
