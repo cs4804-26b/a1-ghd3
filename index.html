@@ -10,10 +10,50 @@
   <script>
     console.log("d3 version", d3.version); // test that d3 loaded
     // Add an SVG
+    const svg = d3.create("svg").attr("width", 5000).attr("height", 5000);
     // Add Rectangles
+    svg.append("rect").attr("class", "catBody").attr("x", 225).attr("y", 275).attr("width", 275).attr("height", 75).attr("stroke", "black").attr("fill", "grey").attr("id", "cat");
     // Add Circles
+    const talk = svg.append("g");
+    talk.append("ellipse").attr("cx", 90).attr("cy", 150).attr("rx", 85).attr("ry", 50).attr("stroke", "black").attr("fill", "none").attr("visibility", "hidden").attr("id", "meow");
+    talk.append("text").text("Meow!").attr("x", 90).attr("y", 150).attr("text-anchor", "middle").attr("dominant-baseline", "middle").attr("font-size", "20px").attr("font-family", "Helvetica").attr("visibility", "hidden").attr("id", "meow");
+    svg.append("path").attr("d", d3.symbol(d3.symbolCircle).size(10000)).attr("stroke", "black").attr("transform", "translate(250, 250)").attr("fill", "grey").attr("id", "cat");
+    svg.append("circle").attr("r", 8).attr("stroke", "black").attr("transform", "translate(225, 230)").attr("id", "cat");
+    svg.append("circle").attr("r", 8).attr("stroke", "black").attr("transform", "translate(275, 230)").attr("id", "cat");
+    svg.append("path").attr("d", d3.symbol(d3.symbolDiamond2).size(200)).attr("stroke", "black").attr("transform", "translate(250, 255)").attr("fill", "pink").attr("id", "cat");
     // Add Lines
+    svg.append("line").attr("x1", 250).attr("y1", 350).attr("x2", 250).attr("y2", 400).attr("stroke", "black").attr("id", "cat").attr("class", "catFrontLeg");
+    svg.append("line").attr("x1", 275).attr("y1", 350).attr("x2", 275).attr("y2", 400).attr("stroke", "black").attr("id", "cat").attr("class", "catFrontLeg");
+    svg.append("line").attr("x1", 450).attr("y1", 350).attr("x2", 450).attr("y2", 400).attr("stroke", "black").attr("id", "cat").attr("class", "catBackLeg");
+    svg.append("line").attr("x1", 475).attr("y1", 350).attr("x2", 475).attr("y2", 400).attr("stroke", "black").attr("id", "cat").attr("class", "catBackLeg");
+    svg.append("line").attr("x1", 250).attr("y1", 265).attr("x2", 250).attr("y2", 275).attr("stroke", "black").attr("id", "cat");
+    svg.append("line").attr("x1", 275).attr("y1", 250).attr("x2", 320).attr("y2", 240).attr("stroke", "black").attr("id", "cat");
+    svg.append("line").attr("x1", 275).attr("y1", 260).attr("x2", 320).attr("y2", 250).attr("stroke", "black").attr("id", "cat");
+    svg.append("line").attr("x1", 275).attr("y1", 270).attr("x2", 320).attr("y2", 260).attr("stroke", "black").attr("id", "cat");
+    svg.append("line").attr("x1", 225).attr("y1", 250).attr("x2", 180).attr("y2", 240).attr("stroke", "black").attr("id", "cat");
+    svg.append("line").attr("x1", 225).attr("y1", 260).attr("x2", 180).attr("y2", 250).attr("stroke", "black").attr("id", "cat");
+    svg.append("line").attr("x1", 225).attr("y1", 270).attr("x2", 180).attr("y2", 260).attr("stroke", "black").attr("id", "cat");
+    svg.append("path").attr("d", d3.line().curve(d3.curveBasis)([[250, 275],[255, 280], [265, 275]])).attr("stroke", "black").attr("fill","none").attr("id", "cat");
+    svg.append("path").attr("d", d3.line().curve(d3.curveBasis)([[250, 275],[245, 280], [235, 275]])).attr("stroke", "black").attr("fill","none").attr("id", "cat");
+    svg.append("path").attr("d", d3.line().curve(d3.curveBasis)([[500, 275],[505, 260], [515, 250],[515, 225],[505, 215], [500, 200]])).attr("stroke", "black").attr("fill","none").attr("id", "cat").attr("class", "catTail");
+    talk.append("line").attr("x1", 150).attr("y1", 250).attr("x2", 125).attr("y2", 225).attr("stroke", "black").attr("visibility", "hidden").attr("id", "meow");
     // Add Polygons
+    svg.append("polygon").attr("points", "200,220, 175,165, 235,195").attr("stroke", "black").attr("fill", "grey").attr("id", "cat");
+    svg.append("polygon").attr("points", "205,210, 185,175, 225,195").attr("stroke", "black").attr("fill", "pink").attr("id", "cat");
+    svg.append("polygon").attr("points", "270,195, 330,165, 300,220").attr("stroke", "black").attr("fill", "grey").attr("id", "cat");
+    svg.append("polygon").attr("points", "285,195, 320,175, 300,210").attr("stroke", "black").attr("fill", "pink").attr("id", "cat");
+    let totalXShift = 0;
+    svg.selectAll("#cat").on("mouseover", (event) => svg.selectAll("#meow").attr("visibility", "visible")).on("mouseout", (event) => svg.selectAll("#meow").attr("visibility", "hidden"));
+    svg.selectAll("rect").on("click", function(event) {
+        const currentWidth = parseFloat(svg.select("rect").attr("width"));
+        const currentHeight = parseFloat(svg.select("rect").attr("height"));
+        svg.select("rect").attr("width", (currentWidth + 10)).attr("height", (currentHeight + 10));
+        svg.selectAll(".catFrontLeg").attr("y1", function() { return parseFloat(d3.select(this).attr("y1")) + 10; }).attr("y2", function() { return parseFloat(d3.select(this).attr("y2")) + 10; });
+        svg.selectAll(".catBackLeg").attr("y1", function() { return parseFloat(d3.select(this).attr("y1")) + 10; }).attr("y2", function() { return parseFloat(d3.select(this).attr("y2")) + 10; }).attr("x1", function() { return parseFloat(d3.select(this).attr("x1")) + 10; }).attr("x2", function() { return parseFloat(d3.select(this).attr("x2")) + 10; });
+        totalXShift += 10;
+        svg.selectAll(".catTail").attr("transform", function() { return `translate(${totalXShift}, 0)`; });
+    });
+    container.append(svg.node());
   </script>
 </body>
 </html>
