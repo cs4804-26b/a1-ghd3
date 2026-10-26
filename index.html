@@ -9,11 +9,178 @@
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script>
     console.log("d3 version", d3.version); // test that d3 loaded
-    // Add an SVG
+
+    // Get container
+    const svg = d3.select("#container")
+      // Put svg inside container div
+      .append("svg")
+      .attr("width", 1450)
+      .attr("height", 600)
+      .style("border", "2px solid #999");
+
     // Add Rectangles
+
+    // Create crimson rectangle at 50, 50
+    svg.append("rect")
+      .attr("x", 50)
+      .attr("y", 50)
+      .attr("width", 300)
+      .attr("height", 50)
+      .attr("fill", "crimson");
+
+    // Create coral rectangle at 50, 100
+    svg.append("rect")
+      .attr("x", 50)
+      .attr("y", 100)
+      .attr("width", 50)
+      .attr("height", 300)
+      .attr("fill", "coral");
+
+    // Create yellow rectangle at 50, 400
+    svg.append("rect")
+      .attr("x", 50)
+      .attr("y", 400)
+      .attr("width", 300)
+      .attr("height", 50)
+      .attr("fill", "yellow");
+
     // Add Circles
+
+    // Create spring green circle at 600, 250
+    svg.append("circle")
+      .attr("cx", 600)
+      .attr("cy", 250)
+      .attr("r", 200)
+      .attr("fill", "springgreen");
+
+    // Create white inner circle at 600, 250
+    svg.append("circle")
+      .attr("cx", 600)
+      .attr("cy", 250)
+      .attr("r", 150)
+      .attr("fill", "white");
+
     // Add Lines
+
+    // Create deep sky blue line from 875, 50
+    svg.append("line")
+      .attr("x1", 875)
+      .attr("y1", 50)
+      .attr("x2", 875)
+      .attr("y2", 450)
+      .attr("stroke", "deepskyblue")
+      .attr("stroke-width", 50);
+
+    // Create aqua line from 900, 425
+    svg.append("line")
+      .attr("x1", 900)
+      .attr("y1", 425)
+      .attr("x2", 1100)
+      .attr("y2", 425)
+      .attr("stroke", "aqua")
+      .attr("stroke-width", 50);
+
     // Add Polygons
+
+    // Dataset coordinate pairs for 1st triangle
+    const dataPoints1 = [
+      [1400, 50],
+      [1150, 250],
+      [1400, 450],
+    ];
+
+    // Create line generator
+    const lineGenerator = d3.line()
+      .x(d => d[0])  // Extract X value from each coordinate pair
+      .y(d => d[1]); // Extract Y value from each coordinate pair
+
+    // Create triangle 1 (purple)
+    svg.append("path")
+      .datum(dataPoints1)
+      .attr("d", lineGenerator)
+      .attr("fill", "purple")
+      .attr("stroke-width", 0);
+
+    const dataPoints2 = [
+      [1475, 50],
+      [1225, 250],
+      [1475, 450],
+    ];
+
+    // Create triangle 2 (white)
+    svg.append("path")
+      .datum(dataPoints2)
+      .attr("d", lineGenerator)
+      .attr("fill", "white")
+      .attr("stroke-width", 0);
+
+    const dataPoints3 = [
+      [1400, 200],
+      [1225, 250],
+      [1400, 300],
+    ];
+
+    // Create triangle 3 (medium purple)
+    svg.append("path")
+      .datum(dataPoints3)
+      .attr("d", lineGenerator)
+      .attr("fill", "mediumpurple")
+      .attr("stroke-width", 0);
+
+    // Animations
+
+    d3.selectAll("rect")
+      .transition()
+      .delay((d, i) => i * 200) // 200 ms delay
+      .duration(1000)
+      .attr("y", function() {
+        // Get current position and convert it to a float
+        const currentY = parseFloat(d3.select(this).attr("y"));
+        
+        // Return position + offset
+        return currentY + 50;
+      });
+
+    // Move circles down one after another
+    d3.selectAll("circle")
+      .transition()
+      .delay((d, i) => (i * 200) + 500) // 200 ms delay, plus 500 buffer
+      .duration(1000)
+      .attr("cy", function() {
+        // Get current position and convert it to a float
+        const currentY = parseFloat(d3.select(this).attr("cy"));
+        
+        // Return position + offset
+        return currentY + 50;
+      });
+
+    // Move lines down one after another
+    d3.selectAll("line")
+      .transition()
+      .delay((d, i) => (i * 200) + 1000) // 200 ms delay, plus 1000 buffer
+      .duration(1000)
+      .attr("y1", function() {
+        // Get current position and convert it to a float
+        const currentY = parseFloat(d3.select(this).attr("y1"));
+        
+        // Return position + offset
+        return currentY + 50;
+      })
+      .attr("y2", function() {
+        // Get current position and convert it to a float
+        const currentY = parseFloat(d3.select(this).attr("y2"));
+        
+        // Return position + offset
+        return currentY + 50;
+      });
+
+    // Move paths down one after another
+    d3.selectAll("path")
+      .transition()
+      .delay((d, i) => (i * 200) + 1500) // 200 ms delay, plus 1500 buffer
+      .duration(1000)
+      .attr("transform", "translate(0, 50)");
+
   </script>
 </body>
 </html>
