@@ -1,19 +1,301 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>A1: Hello World, GitHub and d3</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Day, Night, and Eclipse Field</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 30px;
+        }
+
+        svg {
+            width: 100%;
+            max-width: 800px;
+            border: 2px solid black;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 15px;
+            cursor: pointer;
+        }
+    </style>
 </head>
+
 <body>
-  <div id="container"></div>
-  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-  <script>
-    console.log("d3 version", d3.version); // test that d3 loaded
-    // Add an SVG
-    // Add Rectangles
-    // Add Circles
-    // Add Lines
-    // Add Polygons
-  </script>
+    <h1>Day, Night, and Eclipse Field</h1>
+    <button id="toggle">Switch to Night</button>
+    <button id="eclipse">Solar Eclipse</button>
+    <div id="container"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+
+    <script>
+
+// ChatGPT helped clarify code on SVG paths, scene transitions, birds,
+//  and eclipse interactions.
+
+const svg = d3.select("#container")
+    .append("svg")
+    .attr("viewBox", "0 0 800 500");
+
+// SKY
+const sky = svg.append("rect")
+    .attr("width", 800)
+    .attr("height", 500)
+    .attr("fill", "#87CEEB");
+
+// STARS
+const starPositions = [
+    [100, 70], [200, 140], [350, 60],
+    [480, 125], [740, 55], [570, 45],
+    [300, 35], [75, 180], [420, 95],
+];
+
+const stars = svg.selectAll(".star")
+    .data(starPositions)
+    .join("circle")
+    .attr("class", "star")
+    .attr("cx", d => d[0])
+    .attr("cy", d => d[1])
+    .attr("r", 3)
+    .attr("fill", "white")
+    .attr("opacity", 0);
+
+// SUN AND MOONS
+const corona = svg.append("circle")
+    .attr("cx", 650)
+    .attr("cy", 100)
+    .attr("r", 57)
+    .attr("fill", "none")
+    .attr("stroke", "#ffeea8")
+    .attr("stroke-width", 12)
+    .attr("opacity", 0);
+
+const sun = svg.append("circle")
+    .attr("cx", 650)
+    .attr("cy", 100)
+    .attr("r", 45)
+    .attr("fill", "yellow")
+    .attr("opacity", 1);
+
+
+ // Sun's face
+const sunFace = svg.append("g")
+    .attr("opacity", 1)
+    .style("pointer-events", "none");
+
+// Eyes
+      sunFace.append("circle")
+        .attr("cx", 637)
+        .attr("cy", 90)
+        .attr("r", 4)
+        .attr("fill", "black");
+
+    sunFace.append("circle")
+        .attr("cx", 663)
+        .attr("cy", 90)
+        .attr("r", 4)
+        .attr("fill", "black");
+
+// Smile
+    sunFace.append("path")
+        .attr("d", "M 635 110 Q 650 130 665 110")
+        .attr("fill", "none")
+        .attr("stroke", "black")
+        .attr("stroke-width", 3);
+
+
+const moon = svg.append("circle")
+    .attr("cx", 650)
+    .attr("cy", 100)
+    .attr("r", 35)
+    .attr("fill", "#eeeeee")
+    .attr("opacity", 0)
+    .style("pointer-events", "none");
+
+// Separate moon for eclipse animation
+const eclipseMoon = svg.append("circle")
+    .attr("cx", 760)
+    .attr("cy", 100)
+    .attr("r", 47)
+    .attr("fill", "#101521")
+    .attr("opacity", 0)
+    .style("pointer-events", "none");
+
+// HILLS
+const hills = svg.append("polygon")
+    .attr("points", "0,330 200,210 400,330 600,230 800,330")
+    .attr("fill", "#65a75c");
+
+// FIELD
+const field = svg.append("rect")
+    .attr("x", 0)
+    .attr("y", 330)
+    .attr("width", 800)
+    .attr("height", 170)
+    .attr("fill", "#478b42");
+
+// Lake
+const lake = svg.append("ellipse")
+      .attr("cx", 415)
+      .attr("cy", 418)
+      .attr("rx", 275)
+      .attr("ry", 58)
+      .attr("fill", "#1a79db")
+      .attr("stroke", "#1264b5")
+      .attr("stroke-width", 3);
+
+
+// WATER RIPPLE LINES
+const ripplePaths = [
+    "M 240 416 Q 280 411 320 416",
+    "M 425 434 Q 470 428 515 434",
+    "M 520 403 Q 555 399 580 403"
+];
+
+const ripples = svg.selectAll(".ripple")
+    .data(ripplePaths)
+    .join("path")
+    .attr("class", "ripple")
+    .attr("d", d => d)
+    .attr("fill", "none")
+    .attr("stroke", "#a8ddff")
+    .attr("stroke-width", 2);
+
+// GRASS
+const grassPositions = [
+    [55, 455], [95, 472], [118, 434],
+    [702, 467], [738, 445], [774, 468],
+    [45, 380], [730, 373]
+];
+
+const grass = svg.selectAll(".grass")
+    .data(grassPositions)
+    .join("line")
+    .attr("class", "grass")
+    .attr("x1", d => d[0])
+    .attr("y1", d => d[1])
+    .attr("x2", d => d[0] + 12)
+    .attr("y2", d => d[1] - 21)
+    .attr("stroke", "#86bd6e")
+    .attr("stroke-width", 3);
+
+// BIRDS - curved SVG paths
+const birdPositions = [
+    [110, 105, 1],
+    [245, 138, 0.8],
+    [355, 88, 0.65]
+];
+
+const birds = svg.selectAll(".bird")
+    .data(birdPositions)
+    .join("path")
+    .attr("class", "bird")
+    .attr("d", "M -18 0 Q -9 -12 0 0 Q 9 -12 18 0")
+    .attr("transform", d =>
+        `translate(${d[0]}, ${d[1]}) scale(${d[2]})`
+    )
+    .attr("fill", "none")
+    .attr("stroke", "#27333c")
+    .attr("stroke-width", 3)
+    .attr("stroke-linecap", "round")
+    .attr("opacity", 1);
+
+// SCENE TRANSITIONS
+let mode = "day";
+
+function changeScene(nextMode) {
+    mode = nextMode;
+
+    const night = mode === "night";
+    const eclipse = mode === "eclipse";
+    const day = mode === "day";
+
+    const t = d3.transition().duration(1200);
+      sun.style("pointer-events", day ? "auto" : "none");
+      moon.style("pointer-events", night ? "auto" : "none");
+      eclipseMoon.style("pointer-events", eclipse ? "auto" : "none");
+
+
+    sky.transition(t)
+        .attr("fill",
+            day ? "#87CEEB" :
+            night ? "#142344" : "#253747");
+
+    field.transition(t)
+        .attr("fill",
+            day ? "#478b42" :
+            night ? "#213d2a" : "#35513c");
+
+    hills.transition(t)
+        .attr("fill",
+            day ? "#65a75c" :
+            night ? "#304a45" : "#49644f");
+
+    lake.transition(t)
+        .attr("fill",
+            day ? "#1a79db" :
+            night ? "#0b315b" : "#164c78")
+        .attr("stroke",
+            day ? "#1264b5" : "#183854");
+
+    ripples.transition(t)
+        .attr("stroke",
+            day ? "#a8ddff" : "#49718b");
+
+    grass.transition(t)
+        .attr("stroke",
+            day ? "#86bd6e" : "#304b32");
+
+    sun.transition(t)
+        .attr("opacity", night ? 0 : 1);
+
+    sunFace.transition(t)
+        .attr("opacity", day ? 1 : 0);
+
+    moon.transition(t)
+        .attr("opacity", night ? 1 : 0);
+
+    stars.transition(t)
+        .attr("opacity", night ? 1 : eclipse ? 0.5 : 0);
+
+    birds.transition(t)
+        .attr("opacity", day ? 1 : eclipse ? 1 : 0)
+        .attr("stroke", day ? "#27333c" : "#191919");
+
+    corona.transition(t)
+        .attr("opacity", eclipse ? 1 : 0);
+
+    eclipseMoon.transition(t)
+        .attr("cx", eclipse ? 650 : 760)
+        .attr("opacity", eclipse ? 1 : 0);
+
+    d3.select("#toggle")
+        .text(night ? "Switch to Day" : "Switch to Night");
+
+    d3.select("#eclipse")
+        .text(eclipse ? "End Eclipse" : "Solar Eclipse");
+}
+
+// BUTTON EVENTS
+d3.select("#toggle").on("click", function() {
+    changeScene(mode === "night" ? "day" : "night");
+});
+
+d3.select("#eclipse").on("click", function() {
+    changeScene(mode === "eclipse" ? "day" : "eclipse");
+});
+
+sun.append("title").text("The Sun");
+moon.append("title").text("The Moon");
+lake.append("title").text("The Lake");
+eclipseMoon.append("title").text("The Solar Eclipse");
+
+</script>
 </body>
 </html>
