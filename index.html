@@ -10,10 +10,89 @@
   <script>
     console.log("d3 version", d3.version); // test that d3 loaded
     // Add an SVG
+    const svg = d3.select("body")
+        .append("svg")
+        .attr("width", 1000)
+        .attr("height", 800);
+
     // Add Rectangles
+    svg.append("rect")
+         .attr("x", 325)
+         .attr("y", 200)
+         .attr("width", 50)
+         .attr("height", 100)
+         .attr("fill", "red");
+
+    svg.append("rect")
+         .attr("x", 325)
+         .attr("y", 300)
+         .attr("width", 50)
+         .attr("height", 30)
+         .attr("fill", "blue");
+
     // Add Circles
+    svg.append("circle")
+        .attr("cx", 350)
+        .attr("cy", 150)
+        .attr("r", 50)
+        .attr("fill", "beige");
+
+    svg.append("circle")
+        .attr("cx", 370)
+        .attr("cy", 135)
+        .attr("r", 5)
+        .attr("fill", "black");
+
+    svg.append("circle")
+        .attr("cx", 330)
+        .attr("cy", 135)
+        .attr("r", 5)
+        .attr("fill", "black");
+
     // Add Lines
+    svg.append("line")
+        .attr("x1", 275)
+        .attr("y1", 200)
+        .attr("x2", 325)
+        .attr("y2", 250)
+        .attr("stroke", "beige")
+        .attr("stroke-width", 4);
+
+    svg.append("line")
+        .attr("x1", 425)
+        .attr("y1", 200)
+        .attr("x2", 375)
+        .attr("y2", 250)
+        .attr("stroke", "beige")
+        .attr("stroke-width", 4);
+
+    svg.append("line")
+        .attr("x1", 365)
+        .attr("y1", 330)
+        .attr("x2", 365)
+        .attr("y2", 380)
+        .attr("stroke", "beige")
+        .attr("stroke-width", 4);
+
+    svg.append("line")
+        .attr("x1", 335)
+        .attr("y1", 330)
+        .attr("x2", 335)
+        .attr("y2", 380)
+        .attr("stroke", "beige")
+        .attr("stroke-width", 4);
+
     // Add Polygons
+    svg.append("polygon")
+        .attr("points", "485,175 555,225 530,305 445,305 425,225")
+        .attr("fill", "gold")
+        // If shape is clicked, it will change the color to red
+        .style("cursor", "pointer")
+        .on("click", function(){
+          d3.select(this)
+            .attr("fill", "red")
+        });
+    
   </script>
 </body>
 </html>
