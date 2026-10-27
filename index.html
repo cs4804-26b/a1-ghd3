@@ -3,17 +3,140 @@
 <head>
   <meta charset="utf-8">
   <title>A1: Hello World, GitHub and d3</title>
+  <style type="text/css">
+    
+    #container h1 { 
+      text-align: center; 
+    }
+  
+  </style>
 </head>
 <body>
-  <div id="container"></div>
+  <div id="container">
+    <h1> Texas Counties </h1>
+  </div>
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-  <script>
+  <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+            
+  <script type = "text/javascript">
     console.log("d3 version", d3.version); // test that d3 loaded
+  
+
+    const points = [
+      {name: "Tarrant County Center", coords: [-97.29116473,32.77185236]},
+      {name: "Harris County Center", coords:[-95.39782106,29.85967144]},
+      {name: "Travis County Center", coords: [-97.78194654,30.33423319]}
+    ];
+
+    //MAP PROJECTIONS
+
+    const w = 1600, h = 900;
     // Add an SVG
-    // Add Rectangles
-    // Add Circles
-    // Add Lines
-    // Add Polygons
+    var svg = d3.select("#container")
+						.append("svg")
+						.attr("width", w)
+						.attr("height", h);
+
+    var projection = d3.geoMercator()
+				 .center([ -99.43,31.47 ])
+				 .translate([ w/2, h/2 ])
+         .scale([3000])
+
+    var path = d3.geoPath().projection(projection);
+
+    // Add Rectangles - Metro Area coverage
+    // min x, min y, max x, max y for lat and longitude
+    const metroAreas = [
+      {name:"DFW", coords:[-98.05,31.78,-95.97,33.69], color: "blue"},
+      {name:"HTX", coords:[-96.46,28.85,-94.62,30.63], color:"red"},
+      {name:"AUS", coords:[-98.35,29.83,-96.95,30.98], color:"orange"}
+    ]
+
+    // Add Lines - 
+    // extreme points between the panhandle tip and riogrande delta
+    const extremePoints = [
+      {name:"Pan Handle", coords: [-102.82, 36.4] },
+      { name: "Rio Grande", coords: [-97.23, 26] }
+    ]
+
+    const linesConnect = d3.line()
+        .defined(d => d)
+        .x(d => projection(d.coords)[0])
+        .y(d => projection(d.coords)[1]);
+    
+    const lineData = linesConnect(extremePoints);
+
+    // Add Polygons - Triangle connecting Tarrant (DFW), Travis(Austin), Harris (Houston) Counties  
+    const trianglePoints = [
+        points[0], // Tarrant County
+        points[2], // Travis County
+        points[1]  // Harris County
+    ];
+      
+
+    // Map from https://github.com/Cincome/tx.geojson/blob/master/counties/tx_counties.geojson 
+    // fucntion adapted from https://www.geeksforgeeks.org/javascript/d3-js-json-function/ but updated for newer versions of d3.js
+
+    d3.json("tx_counties.geojson").then(function(json) {
+      // map 
+      svg.selectAll("path")
+        .data(json.features)
+        .enter()
+        .append("path")
+        .attr("d", path)
+        .attr("fill","#d3d3d3");
+
+      // metro area rectangles 
+      svg.selectAll(".metro") // define a seperate metro class
+        .data(metroAreas)
+        .enter()
+        .append("rect")
+        .attr("class", "metro")
+        .attr("x", d => projection([d.coords[0], d.coords[3]])[0]) // x values subtracted for center
+        .attr("y", d => projection([d.coords[0], d.coords[3]])[1]) // y values subtracted for center 
+        .attr("width", d =>
+                projection([d.coords[2], d.coords[3]])[0] -
+                projection([d.coords[0], d.coords[3]])[0]
+             ) // (right-most xy) - (leftmost) xy = width
+        .attr("height", d =>
+                projection([d.coords[0], d.coords[1]])[1] -
+                projection([d.coords[0], d.coords[3]])[1]
+             ) // same for length but with height coords
+        .attr("fill", d => d.color)
+        .attr("fill-opacity", 0.3)
+        .attr("stroke", d => d.color);
+
+        // Texas triangle
+        svg.append("polygon")
+        .attr("points", trianglePoints
+            .map(d => projection(d.coords).join(","))
+            .join(" "))
+        .attr("fill", "purple")
+        .attr("fill-opacity", 0.15)
+        .attr("stroke", "purple")
+        .attr("stroke-width", 3);
+
+      // extreme points line
+        svg.append("path")
+          .attr("d", lineData)
+          .attr("stroke", "black")
+          .attr("stroke-width", 2)
+          .attr("fill", "none");
+
+
+        // center of county points
+        svg.selectAll("circle")
+        .data(points)
+        .enter()
+        .append("circle")
+        .attr("cx", d => projection(d.coords)[0])
+        .attr("cy", d => projection(d.coords)[1])
+        .attr("r", 5)
+        .attr("fill", "green");
+        
+			}).catch(function(error){
+        console.log("Error with Json", error)
+      })
   </script>
 </body>
 </html>
