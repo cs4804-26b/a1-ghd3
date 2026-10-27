@@ -10,10 +10,97 @@
   <script>
     console.log("d3 version", d3.version); // test that d3 loaded
     // Add an SVG
+    const svg = d3.select("#container")
+    .append("svg")
+    .attr("width", 600)
+    .attr("height", 450)
+    .style("background-color", "green");
     // Add Rectangles
+    svg.append("rect")
+    .attr("x", 180)
+    .attr("y", 170)
+    .attr("width", 160)
+    .attr("height", 210)
+    .attr("fill", "red");
     // Add Circles
+    svg.append("circle")
+    .attr("cx", 450)
+    .attr("cy",100)
+    .attr("r",45)
+    .attr("fill","lightblue")
+    .on("mouseover", function(){
+      d3.select(this).attr("fill", "lightgreen");
+    })
+    .on("mouseout", function(){
+      d3.select(this).attr("fill", "lightblue");
+    });
     // Add Lines
+    svg.append("line")
+    .attr("x1", 20)
+    .attr("y1", 380)
+    .attr("x2", 580)
+    .attr("y2", 380)
+    .attr("stroke", "blue")
+    .attr("stroke-width", 5);
     // Add Polygons
+    svg.append("polygon")
+    .attr("points", "160, 170, 260, 70, 360, 170")
+    .attr("fill", "plum");
+    // Add small rectangle for Door
+    svg.append("rect")
+    .attr("x", 240)
+    .attr("y", 290)
+    .attr("width", 45)
+    .attr("height", 90)
+    .attr("fill", "brown");
+    // Add small rectangle door left window
+    svg.append("rect")
+    .attr("x", 200)
+    .attr("y", 210)
+    .attr("width", 40)
+    .attr("height", 40)
+    .attr("fill", "lightblue");
+    // Add small rectangle for right window
+    svg.append("rect")
+    .attr("x", 280)
+    .attr("y", 210)
+    .attr("width", 40)
+    .attr("height", 40)
+    .attr("fill", "lightblue");
+    // Add small circle for doorknob
+    svg.append("circle")
+    .attr("cx", 275)
+    .attr("cy", 350)
+    .attr("r", 4)
+    .attr("fill", "lightgreen");
+    // Add rectangle for chimney
+    svg.append("rect")
+    .attr("x", 300)
+    .attr("y", 90)
+    .attr("width", 30)
+    .attr("height", 80)
+    .attr("fill", "brown");
+    // Add line for flower stem
+    svg.append("line")
+    .attr("x1", 100)
+    .attr("y1", 380)
+    .attr("x2", 100)
+    .attr("y2", 320)
+    .attr("stroke", "darkgreen")
+    .attr("stroke-width", 4);
+    // Add circle for flower
+    svg.append("circle")
+    .attr("cx", 100)
+    .attr("cy", 325)
+    .attr("r", 15)
+    .attr("fill", "lightcoral");
+    // Add an ellipse for a bush
+   svg.append("ellipse")
+    .attr("cx", 390)
+    .attr("cy", 355)
+    .attr("rx", 40)
+    .attr("ry", 25)
+    .attr("fill", "lightgreen");
   </script>
 </body>
 </html>
