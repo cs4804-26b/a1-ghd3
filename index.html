@@ -10,10 +10,59 @@
   <script>
     console.log("d3 version", d3.version); // test that d3 loaded
     // Add an SVG
+    const svg = d3.select("#container")
+      .append("svg")
+      .attr("width", 600)
+      .attr("height", 400);
+    
     // Add Rectangles
+    svg.append("rect") // sky
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("width", 600)
+      .attr("height", 300)
+      .attr("fill", "#fe8714");
+
+    svg.append("rect") // ground
+      .attr("x", 0)
+      .attr("y", 300)
+      .attr("width", 600)
+      .attr("height", 100)
+      .attr("fill", "#3f9b0b");
+    
     // Add Circles
+    const sun = svg.append("circle") // sun
+      .attr("cx", 450)
+      .attr("cy", 100)
+      .attr("r", 50)
+      .attr("fill", "#ef5200")
+      .style("cursor", "pointer")
+      .on("mouseover", function() {
+        d3.select(this).attr("fill", "#ffff00")
+          .attr("r", 60);
+      })
+      .on("mouseout", function() {
+        d3.select(this).attr("fill", "#ef5200")
+          .attr("r", 50);
+      });
+    
     // Add Lines
+    svg.append("line") // horizon line
+      .attr("x1", 0)
+      .attr("y1", 300)
+      .attr("x2", 600)
+      .attr("y2", 300)
+      .attr("stroke", "#000000")
+      .attr("stroke-width", 1);
+    
     // Add Polygons
+    svg.append("polygon") // mountain
+      .attr("points", "150,300 450,300 350,150 250,150")
+      .attr("fill", "#3e424b");
+
+    svg.append("polygon") // snowcap
+      .attr("points", "350,150 250,150 300,50")
+      .attr("fill", "#ffffff");
   </script>
 </body>
 </html>
