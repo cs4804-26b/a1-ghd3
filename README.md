@@ -1,6 +1,34 @@
 Assignment 1 - Hello World: GitHub and d3  
 ===
+Link: https://vpan405.github.io/a1-ghd3/
 
+This project is based on the album art for Heaven Knows by PinkPantheress. It is drawn only with d3 shapes, and clicking the dove makes it fly.  
+<img width="407" height="424" alt="image" src="https://github.com/user-attachments/assets/36fecebb-ba8c-474a-9043-ef60b349ff79" />
+
+<img width="401" height="420" alt="image" src="https://github.com/user-attachments/assets/bec642cf-5b6b-4f49-9811-0dfe6040d02b" />
+
+Primitives + Where they're used:
+- Rectangles - Background, Doorway, Stairs
+- Circles - Halos behind Pink, Floating dust 
+- Lines - Light rays
+- Polygons - Pink, Dove
+- Different Colors - red, black, beige, brown, white  
+
+Technical Description:
+--- 
+- The dove is a grouped object and the wings flap in looping chain
+- Clicking it runs a chained flight across the screen and back
+- The floating dust rises and disappears before appearing again
+- Opacity changed and Gaussian blur used to create the halos 
+
+Design Description: 
+--- 
+To keep the mood of the original album cover - 
+- Color palette kept to darker neutrals with only pops of color being the red doorway, beige dress, and white dove so your eye is pulled between the 3 
+- Halos were added to stop the visual from looking too flat and to keep the surreal/ethereal vibe 
+
+---
+Instructions:
 This is a starting project to make sure you can write and host a webpage that generates graphics using d3. 
 
 The primary goal is to be able to generate graphics primitives (circles, rectangles, lines, polygons) at different locations on the screen with different colors. 
@@ -33,7 +61,7 @@ GitHub Details
 - Fork the GitHub Repository for Assignment 1. You now have a copy associated with your username.
 - Make changes to index.html to fulfill the project requirements. 
 - Turn on GitHub Pages for your fork: Settings → Pages → Build and deployment → Source: "Deploy from a branch", Branch: `main`, folder `/ (root)`. See [Configuring a publishing source](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) if you need help. Spend some time learning this if you're new!
-- Edit the README.md with a link to your GitHub Pages site "https://YourUsernameGoesHere.github.io/a1-ghd3/".
+- Edit the README.md with a link to your GitHub Pages site "https://vpan405.github.io/a1-ghd3/".
 
 Submission Details
 ---

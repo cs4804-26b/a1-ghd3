@@ -3,17 +3,140 @@
 <head>
   <meta charset="utf-8">
   <title>A1: Hello World, GitHub and d3</title>
+  <style>
+    body { margin: 0; background: #000000; color: #ffffff; font-family: "Times New Roman", Times, serif; }
+    #container { max-width: 640px; margin: 0 auto; padding: 16px; }
+    h1 { font-size: 1.3rem; font-weight: normal; margin: 4px 0; }
+    p { margin: 0 0 10px; font-size: .95rem; opacity: .75; }
+    svg { width: 100%; height: auto; display: block; cursor: pointer; }
+  </style>
 </head>
 <body>
-  <div id="container"></div>
+  <div id="container">
+    <h1>Heaven Knows</h1>
+    <p>Based on the cover art of PinkPantheress's Heaven Knows Album (one of my favorites). Click the dove to let it fly.</p>
+  </div>
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script>
+    const W = 600;
+    const H = 700;
+    const rng = Math.random;
+
     console.log("d3 version", d3.version); // test that d3 loaded
     // Add an SVG
-    // Add Rectangles
-    // Add Circles
-    // Add Lines
-    // Add Polygons
+    const svg = d3.select("#container").append("svg").attr("viewBox", `0 0 ${W} ${H}`)
+      .attr("role", "img");
+    svg.append("defs").html(`
+      <filter id="soft"><feGaussianBlur stdDeviation="14"/></filter>
+      <filter id="grain"><feGaussianBlur stdDeviation="1.2"/></filter>`);
+    
+    // Add Rectangles: background + door + stairs
+    const defs = svg.select("defs");
+    defs.append("linearGradient").attr("id", "wallGlow").attr("x1", "0%").attr("y1", "0%").attr("x2", "0%").attr("y2", "100%")
+      .selectAll("stop").data([
+        { offset: "0%", color: "#130b10" },
+        { offset: "55%", color: "#21151b" },
+        { offset: "100%", color: "#050507" }
+      ]).join("stop").attr("offset", d => d.offset).attr("stop-color", d => d.color);
+    defs.append("linearGradient").attr("id", "redDoor").attr("x1", "0%").attr("y1", "0%").attr("x2", "100%").attr("y2", "100%")
+      .selectAll("stop").data([
+        { offset: "0%", color: "#a30d25" },
+        { offset: "55%", color: "#76091a" },
+        { offset: "100%", color: "#3b0612" }
+      ]).join("stop").attr("offset", d => d.offset).attr("stop-color", d => d.color);
+    
+    // doorway
+    svg.append("rect").attr("x", 300).attr("y", 78).attr("width", 160).attr("height", 190)
+      .attr("fill", "#8f0b20").attr("opacity", 0.28).attr("filter", "url(#soft)");
+    svg.append("rect").attr("x", 318).attr("y", 82).attr("width", 124).attr("height", 150)
+      .attr("fill", "url(#redDoor)").attr("stroke", "#c43a48").attr("stroke-opacity", 0.35).attr("stroke-width", 2);
+    svg.append("rect").attr("x", 329).attr("y", 94).attr("width", 102).attr("height", 128)
+      .attr("fill", "#b5122b").attr("opacity", 0.24);
+    
+    // stairs
+    // claude was used to help (for the perspective)
+    const stairs = d3.range(10);
+    svg.append("g").selectAll("polygon").data(stairs).join("polygon")
+      .attr("points", i => {
+        const y1 = 235 + i * i * 4.25;
+        const y2 = 235 + (i + 1) * (i + 1) * 4.25;
+        const half1 = 48 + i * 18;
+        const half2 = 48 + (i + 1) * 18;
+        return `${380-half1},${y1} ${380+half1},${y1} ${380+half2},${y2} ${380-half2},${y2}`;
+      })
+      .attr("fill", (d, i) => i % 2 === 0 ? "#3a2b31" : "#241c22")
+      .attr("stroke", "#77606a").attr("stroke-opacity", 0.42).attr("stroke-width", 1.2);
+    
+    // Add Circles: Halo behind Pink
+    svg.append("circle").attr("cx", 210).attr("cy", 300).attr("r", 190).attr("fill", "#c99a86")
+      .attr("opacity", 0.22).attr("filter", "url(#soft)");
+    svg.append("circle").attr("cx", 210).attr("cy", 250).attr("r", 90).attr("fill", "#efe0cc")
+      .attr("opacity", 0.18).attr("filter", "url(#soft)");
+    
+    // Floating dust
+    // claude was used to help
+    const dust = d3.range(60).map(() => ({ x: rng() * W, y: rng() * H, r: 0.6 + rng() * 1.8 }));
+    const dustSel = svg.append("g").selectAll("circle").data(dust).join("circle")
+      .attr("cx", d => d.x).attr("cy", d => d.y).attr("r", d => d.r)
+      .attr("fill", "#f6ead8").attr("opacity", d => 0.15 + rng() * 0.4);
+    (function rise() {
+      dustSel.transition().duration(9000).ease(d3.easeLinear)
+        .attr("cy", d => d.y - 80).attr("opacity", 0)
+        .transition().duration(0).attr("cy", d => d.y).attr("opacity", d => 0.15 + d.r / 4)
+        .on("end", (event, d) => {if (d === dust[0]) rise(); });
+    })();
+    
+    // Add Lines: light rays
+    svg.append("g").selectAll("line").data(d3.range(7)).join("line")
+      .attr("x1", i => 350 + i * 10).attr("y1", 225)
+      .attr("x2", i => 170 + i * 70).attr("y2", H)
+      .attr("stroke", "#d9a2a8").attr("stroke-width", 1).attr("opacity", 0.035);
+    
+    // Add Polygons: Pink and Dove
+    // Pink
+    const fig = svg.append("g").attr("transform", "translate(-95,6)");
+    fig.append("path").attr("fill", "#e8dfcf") // skirt and bodice
+      .attr("d", "M268,300 Q300,285 332,300 L350,380 Q395,470 440,600 L160,600 Q205,470 250,380 Z");
+    fig.append("polygon").attr("fill", "#cfc3ae").attr("opacity", 0.8) // shaded fold
+      .attr("points", "300,330 336,430 360,600 300,600");
+    fig.append("polygon").attr("fill", "#fbf4e6").attr("opacity", 0.75) // lit fold
+      .attr("points", "262,330 240,470 200,600 250,600 280,440");
+    fig.append("path").attr("fill", "#a67c3f") // arm
+      .attr("d", "M270,305 Q232,350 238,430 Q250,440 258,428 Q262,360 290,330 Z");
+    fig.append("circle").attr("cx", 304).attr("cy", 262).attr("r", 24).attr("fill", "#a67c3f"); // head
+    fig.append("path").attr("fill", "#17110f") // dark hair
+      .attr("d", "M278,258 Q285,228 312,232 Q336,240 330,270 Q326,246 308,246 Q290,246 284,282 Q276,272 278,258 Z");
+
+    // Dove
+    const dove = svg.append("g").attr("transform", "translate(100,120) scale(1.1)");
+    const wingD = "M0,-6 Q-18,-62 -74,-74 Q-46,-44 -52,-22 Q-32,-28 -20,-10 Z";
+    const wingFar = dove.append("path").attr("d", wingD).attr("fill", "#cfc8bd")
+      .attr("transform", "rotate(8,0,-6)");
+    dove.append("path").attr("fill", "#f7f1e6")
+      .attr("d", "M-34,2 Q-12,-18 22,-9 Q34,-4 40,-11 L48,-8 L40,-1 Q30,9 6,13 Q-14,17 -42,9 L-56,16 L-50,3 Z");
+    dove.append("polygon").attr("fill", "#e3dccf").attr("points", "-50,3 -78,6 -76,16 -52,13");
+    dove.append("circle").attr("cx", 36).attr("cy", -8).attr("r", 2).attr("fill", "#1b1517");
+    const wingNear = dove.append("path").attr("d", wingD).attr("fill", "#fffaf0");
+
+    // dove wing flap + movement
+    // claude was used to help
+    function flap() {
+      wingNear.transition().duration(450).ease(d3.easeSinInOut).attr("transform", "rotate(34,0,-6)")
+        .transition().duration(450).ease(d3.easeSinInOut).attr("transform", "rotate(-12,0,-6)")
+        .on("end", flap);
+      wingFar.transition().duration(450).ease(d3.easeSinInOut).attr("transform", "rotate(30,0,-6)")
+        .transition().duration(450).ease(d3.easeSinInOut).attr("transform", "rotate(4,0,-6)");
+    }
+    flap();
+
+    let flying = false;
+    svg.on("click", () => {
+      if (flying) return; flying = true;
+      dove.transition().duration(3500).ease(d3.easeCubicInOut).attr("transform", "translate(700,120) scale(1.1)")
+      .transition().duration(0).attr("transform", "translate(-90,120) scale(1.1)")
+      .transition().duration(3500).ease(d3.easeCubicInOut).attr("transform", "translate(100,120) scale(1.1)")
+      .on("end", () => { flying = false; });
+    });
   </script>
 </body>
 </html>
