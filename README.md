@@ -85,3 +85,17 @@ Remember, it is up to *you* to define what constitutes a technical and design ac
 Be ambitious as these are designed to allow you to shape your learning.
 These are the only way to move from B to A territory.
 
+Notes:
+I used the D3 website for examples and I replaced some of the code to check how it works and then played around with the sizing and dimensions till I made a house. I then looked up append("image") to ensure I knew that it existed, I added it on with a jpeg image to the right of the shapes. I made the shapes make a house and then imported a jpeg file to put to the right to test the image function. 
+
+Website link: https://r-403.github.io/a1-ghd3/
+
+Creative achievements: With the limited time I had handling an overload term, I added a bit of humor of making house. An image of Dr. House from the show "House" to the right of a house made with shapes.
+
+
+
+
+<img width="1440" height="780" alt="Screenshot 2026-10-26 at 8 52 20 PM" src="https://github.com/user-attachments/assets/c8102748-0108-4676-96b7-1033b3a42ed8" />
+<img width="287" height="195" alt="Screenshot 2026-10-26 at 8 52 07 PM" src="https://github.com/user-attachments/assets/22abd34e-7db4-4950-aa7a-6a376caf4c53" />
+<img width="486" height="343" alt="Screenshot 2026-10-26 at 8 51 56 PM" src="https://github.com/user-attachments/assets/acd3eca3-814e-4051-83a7-0747ba5e12ce" />
+
