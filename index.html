@@ -4,16 +4,265 @@
   <meta charset="utf-8">
   <title>A1: Hello World, GitHub and d3</title>
 </head>
-<body>
+<body style="background-color:black;">
+<!--<style>body{background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgE-Yn1Wh2TmeqlhaYzT1-mCVM0lasK83xgh0T0FTgBB8O8DGU17VCGhU&s=10');
+  background-repeat: no-repeat;  
+  background-size: 100% 100%;}</style>-->
   <div id="container"></div>
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script>
     console.log("d3 version", d3.version); // test that d3 loaded
+    
+    const ox = 200;
+    const oy = 500;
+
+    const width = 750;
+    const height = 750;
+    const margin = 0;
+
+    const group = d => d.id;
+    const color = d3.scaleOrdinal(d3.schemeDark2);
+
+
     // Add an SVG
-    // Add Rectangles
-    // Add Circles
-    // Add Lines
-    // Add Polygons
+    const svg = d3.create("svg")
+        .attr("width", width)
+        .attr("height", height);
+        //.attr("viewBox", [-margin, -margin, width, height]); 
+
+    //Background  
+    var gradient = svg.append("svg:defs")
+        .append("svg:radialGradient")
+        .attr("id", "gradient")
+        .attr("x1", "0%")
+        .attr("y1", "0%")
+        .attr("x2", "50%")
+        .attr("y2", "50%")
+        .attr("x3", "100%")
+        .attr("y3", "100%")
+        .attr("spreadMethod", "pad");
+
+    gradient.append("svg:stop")
+        .attr("offset", "0%")
+        .attr("stop-color", "#3D092A")
+        .attr("stop-opacity", 1);
+
+    gradient.append("svg:stop")
+        .attr("offset", "50%")
+        .attr("stop-color", "#800080")
+        .attr("stop-opacity", 1);
+
+    gradient.append("svg:stop")
+        .attr("offset", "100%")
+        .attr("stop-color", "#007C80")
+        .attr("stop-opacity", 1);
+
+    svg.append('ellipse')
+        .attr('cx', ox)
+        .attr('cy', oy)
+        .attr('rx', height)
+        .attr('ry', width)
+        .attr('fill', 'url(#gradient)');
+
+    //Curves
+    var curveFunc = d3.line()
+        .curve(d3.curveNatural)
+        .x(function(d) { return d.x })
+        .y(function(d) { return d.y })
+
+    function appendCurve(curve,thick){
+        svg.append('path')
+            .attr('d', curveFunc(curve))
+            .attr('stroke', 'black')
+            .attr('stroke-width', thick)
+            .attr('fill', 'none');
+    }
+
+    var dotCurve1 = [{x: ox, y: oy-10}, {x: ox+100, y: oy-120}, {x: ox+200, y: oy-100}, {x: ox+300, y: oy-170}, {x: ox+500, y: oy-250}, {x: ox+600, y: oy-100}]
+    var dotCurve2 = [{x: ox+10, y: oy+10}, {x: ox+110, y: oy-100}, {x: ox+210, y: oy-80}, {x: ox+310, y: oy-150}, {x: ox+510, y: oy-230}, {x: ox+610, y: oy+20}]
+    var groupCurve1 = [{x: ox, y: oy}, {x: ox-110, y: oy-100}, {x: ox-210, y: oy-400}]
+    var groupCurve2 = [{x: ox, y: oy}, {x: ox-110, y: oy-75}, {x: ox-210, y: oy-300}]
+    var groupCurve3 = [{x: ox, y: oy}, {x: ox-110, y: oy-55}, {x: ox-210, y: oy-200}]
+    var groupCurve4 = [{x: ox, y: oy}, {x: ox-110, y: oy-30}, {x: ox-210, y: oy-120}]
+    var groupCurve5 = [{x: ox, y: oy}, {x: ox-110, y: oy-15}, {x: ox-210, y: oy-50}]
+    var groupCurve6 = [{x: ox, y: oy}, {x: ox-110, y: oy+10}, {x: ox-210, y: oy}]
+    var thickCurve = [{x: ox, y:oy}, {x:ox, y:oy+100}, {x:ox+150, y:oy+90}, {x:ox+190, y:oy+190}, {x:ox+360, y:oy+155}, {x:ox+410, y:oy+255}]
+    var underCurve1 = [{x:ox, y:oy+110}, {x:ox+130, y:oy+120}, {x:ox+180, y:oy+220}, {x:ox+350, y:oy+175}, {x:ox+390, y:oy+255}]
+    var underCurve2 = [{x:ox, y:oy+110}, {x:ox+120, y:oy+140}, {x:ox+170, y:oy+240}, {x:ox+340, y:oy+195}, {x:ox+370, y:oy+275}]
+    var underCurve3 = [{x:ox, y:oy+110}, {x:ox+110, y:oy+160}, {x:ox+160, y:oy+260}, {x:ox+330, y:oy+215}, {x:ox+350, y:oy+295}]
+    var underCurve4 = [{x:ox, y:oy+110}, {x:ox+100, y:oy+180}, {x:ox+150, y:oy+280}, {x:ox+320, y:oy+235}, {x:ox+330, y:oy+315}]
+    var underCurve5 = [{x:ox, y:oy+110}, {x:ox+80, y:oy+200}, {x:ox+140, y:oy+300}, {x:ox+310, y:oy+255}, {x:ox+310, y:oy+335}]
+
+    appendCurve(dotCurve1, 3.5)
+    appendCurve(dotCurve2, 3.5)
+    appendCurve(groupCurve1, 3.5)
+    appendCurve(groupCurve2, 3.5)
+    appendCurve(groupCurve3, 3.5)
+    appendCurve(groupCurve4, 3.5)
+    appendCurve(groupCurve5, 3.5)
+    appendCurve(groupCurve6, 3.5)
+    appendCurve(thickCurve, 20)
+    appendCurve(underCurve1, 3.5)
+    appendCurve(underCurve2, 3.5)
+    appendCurve(underCurve3, 3.5)
+    appendCurve(underCurve4, 3.5)
+    appendCurve(underCurve5, 3.5)
+
+    //Dots
+    var dots = [{x: ox+22, y: oy-25}, {x:ox+48, y: oy-62}, {x:ox+83, y: oy-98}, {x: ox+130, y: oy-110}, {x: ox+180, y: oy-95}, {x: ox+240, y: oy-107}, 
+        {x: ox+290, y: oy-147}, {x: ox+340, y: oy-185}, {x: ox+400, y: oy-220}, {x: ox+475, y: oy-242}, {x: ox+540, y: oy-216}]
+
+    svg.append('g')
+        .attr('fill', 'black')
+      .selectAll("circle")
+      .data(dots)
+      .join('circle')
+        .attr('cx', d => d.x)
+        .attr('cy', d => d.y)
+        .attr('r', 8);
+
+    //Rings
+    var rings = [{cx:ox-110, cy: oy+150, rx: 10, ry: 10},{cx:ox-108, cy: oy+150, rx: 32, ry: 30},{cx:ox-106, cy: oy+150, rx: 54, ry: 50},
+        {cx:ox-100, cy: oy+150, rx: 76, ry: 70},{cx:ox-92, cy: oy+150, rx: 98, ry: 90},
+        {cx:ox-60, cy: oy+37, rx: 5, ry: 5},{cx:ox-60, cy: oy+37, rx: 15, ry: 15},{cx:ox-60, cy: oy+37, rx: 23, ry: 23},
+        {cx:ox-170, cy: oy+45, rx: 5, ry: 5},{cx:ox-170, cy: oy+45, rx: 15, ry: 15},{cx:ox-170, cy: oy+45, rx: 25, ry: 25},{cx:ox-170, cy: oy+45, rx: 33, ry: 37},
+        {cx:ox+90, cy: oy-10, rx: 20, ry: 15},{cx:ox+90, cy: oy-10, rx: 30, ry: 25},{cx:ox+90, cy: oy-10, rx: 40, ry: 35}]
+
+    svg.append('g')
+        .attr('fill', 'none')
+        .attr('stroke', 'black')
+        .attr('stroke-width', 3.5)
+      .selectAll('ellipse')
+      .data(rings)
+      .join('ellipse')
+        .attr('cx', d => d.cx)
+        .attr('cy', d => d.cy)
+        .attr('rx', d => d.rx)
+        .attr('ry', d => d.ry);
+
+    function appendCircle(x,y,r,color,){
+        svg.append('circle')
+            .attr('fill', color)
+            .attr('stroke', 'black')
+            .attr('stroke-width',3.5)
+            .attr('cx', ox+x)
+            .attr('cy', oy+y)
+            .attr('r', r);
+    }
+
+    appendCircle(-110,40,15,'black')
+    appendCircle(30,220,15,'black')
+    appendCircle(-180,220,8,'black')
+    appendCircle(90,-10,7,'black')
+
+    //Cells
+    appendCircle(330,-90,10,'black')
+    appendCircle(320,-80,30,'none')
+
+    appendCircle(460,165,8,'black')
+    appendCircle(480,175,45,'none')
+
+    appendCircle(290,15,40,'black')
+    appendCircle(340,25,40,'black')  
+    appendCircle(290,15,32,'#800080')
+    svg.append('circle')
+        .attr('fill', '#800080')
+        .attr('stroke', 'none')
+        .attr('cx', ox+340)
+        .attr('cy', oy+25)
+        .attr('r', 32);
+
+    svg.append('ellipse')
+        .attr('fill', 'none')
+        .attr('stroke', 'black')
+        .attr('stroke-width',5)
+        .attr('cx', ox+470)
+        .attr('cy', oy-100)
+        .attr('rx', 70)
+        .attr('ry', 40); 
+    appendCircle(440,-100,20,'none')
+    appendCircle(440,-100,7,'black') 
+    appendCircle(500,-100,7,'black') 
+
+    svg.append('ellipse')
+        .attr('fill', 'black')
+        .attr('stroke', 'black')
+        .attr('stroke-width',5)
+        .attr('cx', ox+490)
+        .attr('cy', oy+15)
+        .attr('rx', 35)
+        .attr('ry', 50);
+    appendCircle(490,-5,15,'#620080')
+    appendCircle(490,35,15,'#620080')
+
+    //Zig zag (polygons)
+    function appendZig(points){
+        svg.append("polygon")
+            .data([points])
+            .attr("points", d => d.map(p => p.join(",")).join(" "))
+            .attr("fill", "black")
+            .attr("stroke", "black")
+            .attr("stroke-width", 10)
+            .attr("stroke-linejoin", "round");
+    } 
+
+    appendZig([[ox-10, oy-5],[ox-25,oy-30],[ox+5,oy-40],[ox,oy-5]])
+    appendZig([[ox-20, oy-25],[ox-40,oy-40],[ox+20,oy-60],[ox,oy-32]])
+    appendZig([[ox-60, oy-55],[ox-78,oy-74],[ox+30,oy-100],[ox+20,oy-60]])
+    appendZig([[ox-80, oy-80],[ox-90,oy-120],[ox-60,oy-125],[ox-60,oy-75]])
+    appendZig([[ox-60, oy-80],[ox-90,oy-120],[ox+60,oy-175],[ox+50,oy-130]])
+    appendZig([[ox+50, oy-130],[ox+60,oy-175],[ox+220,oy-175],[ox+200,oy-140]])
+    appendZig([[ox+50, oy-190],[ox+40,oy-250],[ox+230,oy-225],[ox+220,oy-175]])
+    appendZig([[ox-100, oy-135],[ox-120,oy-195],[ox+40,oy-250],[ox+50,oy-190]])    
+    appendZig([[ox-120, oy-195],[ox-145,oy-350],[ox-80,oy-370],[ox-30,oy-190]])    
+    appendZig([[ox-145, oy-350],[ox-130,oy-420],[ox,oy-420],[ox+5,oy-370]])    
+    appendZig([[ox-10, oy-260],[ox-2,oy-420],[ox+50,oy-430],[ox+80,oy-280]])    
+    appendZig([[ox+30, oy-270],[ox+70,oy-300],[ox+150,oy-300],[ox+160,oy-260]])    
+    appendZig([[ox+100, oy-300],[ox+200,oy-440],[ox+350,oy-460],[ox+160,oy-260]])
+
+    var cap = [{x:ox+210, y:oy-440}, {x:ox+205, y:oy-455}, {x:ox+290, y:oy-490}, {x:ox+345, y:oy-470}, {x:ox+350, y:oy-460}]
+    svg.append('path')
+        .attr('d', curveFunc(cap))
+        .attr('stroke', 'none')
+        .attr('stroke-width',0)
+        .attr('fill', 'black');       
+
+    //Center gradient
+    var gradientcenter = svg.append("svg:defs")
+        .append("svg:radialGradient")
+        .attr("id", "gradientcenter")
+        .attr("x1", "0%")
+        .attr("y1", "0%")
+        .attr("x2", "50%")
+        .attr("y2", "50%")
+        .attr("x3", "100%")
+        .attr("y3", "100%")
+        .attr("spreadMethod", "pad");
+
+    gradientcenter.append("svg:stop")
+        .attr("offset", "0%")
+        .attr("stop-color", "white")
+        .attr("stop-opacity", 1);
+
+    gradientcenter.append("svg:stop")
+        .attr("offset", "50%")
+        .attr("stop-color", "#A30064")
+        .attr("stop-opacity", 1);
+
+    gradientcenter.append("svg:stop")
+        .attr("offset", "100%")
+        .attr("stop-color", "#560319")
+        .attr("stop-opacity", 1);   
+
+    svg.append("circle")
+        .attr('stroke', '#560319')
+        .attr('stroke-width', 2)
+        .attr('cx', ox)
+        .attr('cy', oy)
+        .attr('r', 20)
+        .attr('fill', 'url(#gradientcenter)');
+
+    container.append(svg.node());
   </script>
 </body>
 </html>

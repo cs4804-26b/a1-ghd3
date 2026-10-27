@@ -1,3 +1,39 @@
+GitHub Pages link: https://allysonsterling.github.io/a1-ghd3/index.html
+
+Inteded image: ![alt text](image.png)
+
+
+I created a collection of shapes and patterns modelled after a motif repeated from a show known as The Summer Hikaru Died. These patterns are the true form of the titular character. Included below are reference photos.
+
+<img width="736" height="532" alt="image" src="https://github.com/user-attachments/assets/d03c665d-d40f-48a2-aa70-e3da838102ca" />
+<img width="1600" height="800" alt="image" src="https://github.com/user-attachments/assets/4e010732-46bc-4413-a5e3-36d3b943e5ef" />
+
+
+
+Sources Referenced:
+
+https://observablehq.com/@d3/bubble-chart/2
+
+https://observablehq.com/@harrylove/draw-a-circle-with-d3
+
+https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorials/SVG_from_scratch/Gradients
+
+
+Techinical achievements:
+
+- Functionalizing several shapes such as circles, curves, etc
+
+- Showing multiple similar shapes with one command and a single list of shapes
+
+Design Achievements: 
+
+- Gradient coloration for background and center
+
+- Shapes following the same curves (such as circles within line curves)
+
+- Simulating holes in shapes with circles of background colors
+
+
 Assignment 1 - Hello World: GitHub and d3  
 ===
 
