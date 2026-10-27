@@ -1,87 +1,63 @@
-Assignment 1 - Hello World: GitHub and d3  
-===
 
-This is a starting project to make sure you can write and host a webpage that generates graphics using d3. 
+# Assignment 1 - Day and Night Field
 
-The primary goal is to be able to generate graphics primitives (circles, rectangles, lines, polygons) at different locations on the screen with different colors. 
+## Project Description
+My project is centered around a beautiful mountain field with a lake. I added functionality to switch between day and night, as well as a functionality to enact a solar eclipse. The condition changes cause the colors of the scene to shift as well through animated transitions. 
 
-The secondary goals are to 1) introduce you to coding on GitHub, including publishing your visualizations with GitHub Pages, and 2) teach you how to host your web-based visualizations on a web-server, which opens up a world of possibilities.
+## GitHub Page Link
+[My Visualization](https://sskar04.github.io/a1-ghd3/)
+## Screenshots
 
-You may write everything from scratch, or start with demo programs from books or the web. 
-If you do start with code that you found on any project, you **must identify** the source of the code in your README and, most importantly, make non-trivial changes to the code to make it your own so you really learn what you're doing.
-For AI-generated code, please see the policy in the syllabus.
+### Daytime
+![Daytime Scene](day.png)
 
-For example, you could download one of the d3.js examples, read it through so you understand what it's doing, and then change the appearance of the graphical output to use different color schemes, different primitive shapes, different layouts of the primitives, and so on.
+### Nighttime
+![Nighttime Scene](night.png)
 
-Resources
----
+### Eclipse
+![Eclipse Scene](eclipse.png)
 
-If you need a JavaScript/HTML/CSS refresher, see [MDN's Learn web development](https://developer.mozilla.org/en-US/docs/Learn_web_development), [Codecademy's Introduction to JavaScript](https://www.codecademy.com/learn/introduction-to-javascript), or find one of your choosing on the web.
+## Technical Achievements
 
-If you need a Git/GitHub refresher, some possible resources include GitHub's [Hello World](https://docs.github.com/en/get-started/using-github/hello-world), [GitHub flow](https://docs.github.com/en/get-started/using-github/github-flow), and [Fork a repository](https://docs.github.com/en/pull-requests/how-tos/work-with-forks/fork-a-repo) guides, [GitHub Skills](https://skills.github.com/), and [Learn Git Branching](https://learngitbranching.js.org/).
+### Technical Achievement 1 - Shapes
+I used additional shapes with D3, including an ellipse for the lake and paths for the birds, water ripples, and the smile on the sun. 
 
-Requirements
----
+### Technical Achievement 2 - Transitions
+My changeScene() function updates almost every element in the scene using D3 transitions, affecting color and opacity mainly. I also added transitions in between the three different scenes for smooth switching between scenes.
 
-1. Your project should contain at least four kinds of graphics primitives (circles, rectangles, lines, polygons) in different colors. 
-2. Your document should identify the sources of the code if you start with code that you found. 
-3. Your code should be forked from the GitHub repo and published with GitHub Pages. See the "GitHub Details" section below for detailed instructions on how to do this.
+### Technical Achievement 3 - User Interactions
+I added buttons to allow users to switch between the different scenes and trigger animations. I also added tooltips for different fixtures in the scene, like the sun, the moon, the eclipse, and the lake. This required some handling as I had to figure out how to, for example, not make the moon tooltip show during the day time scene and vice versa. 
 
-GitHub Details
----
+## Design Achievements
 
-- Fork the GitHub Repository for Assignment 1. You now have a copy associated with your username.
-- Make changes to index.html to fulfill the project requirements. 
-- Turn on GitHub Pages for your fork: Settings → Pages → Build and deployment → Source: "Deploy from a branch", Branch: `main`, folder `/ (root)`. See [Configuring a publishing source](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) if you need help. Spend some time learning this if you're new!
-- Edit the README.md with a link to your GitHub Pages site "https://YourUsernameGoesHere.github.io/a1-ghd3/".
+### Design Achievement 1
+I wanted my visualization to be lively and happy. I chose bright colors for the daytime mountain scene to reflect a beautiful summer day hiking. I also made the scene responsive to the different conditions you enact, changing colors to reflect the night or the solar eclipse.
 
-Submission Details
----
-- To submit, make a [Pull Request](https://docs.github.com/en/pull-requests/how-tos/create-pull-requests/creating-a-pull-request-from-a-fork) on the original repository.
-- Note: name your pull request using the following scheme: 
-```
-a1-your Gh username-your first name-your lastname
+### Design Achievement 2
+I went beyond the required shapes by adding extra details, including birds, water ripples, a lake, and a smiling sun. I also included a seperate solar eclipse mode in addition to the day and night cycle, allowing the scene to change between 3 distinct conditions and color palettes. I also had to deal with challenges with layering and opacity. I ended up mapping the opacity of the sun, moon, eclipse moon, and corona to the button that is selected.
 
-```
+## Sources and References
 
-Vis Details
----
+- D3 Selections:
+  https://d3js.org/d3-selection
+  Used to learn how to create SVG elements.
 
-For this project you should use d3.js. Later projects will use other tools (e.g. Python libraries), but d3 is the industry standard for now.
-You can learn from examples on the [d3.js](https://d3js.org) site or start from scratch.
+- D3 Event Handling:
+  https://d3js.org/d3-selection/events
+  Used for click events and interactions.
 
-See [Getting started](https://d3js.org/getting-started) for ways to load d3. To preview your page locally, open index.html in Chrome, or run `python3 -m http.server` in the repo folder and visit http://localhost:8000.
+- D3 Transitions:
+  https://d3js.org/d3-transition
+  Used for animated changes between scenes.
 
-Creative solutions are welcome! In the past I've seen recreations of paintings, interactives, and more.
+- MDN SVG Basic Shapes:
+  https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorials/SVG_from_scratch/Basic_shapes
+  Used for SVG shape attributes.
 
-Please go beyond the minimum requirements of this project-- we've made it SUPER basic so you can explore, or fill in any gaps in your understanding of web coding.
-Experiment with other aspects of the [d3 API](https://d3js.org/api) and the examples in the [D3 gallery](https://observablehq.com/@d3/gallery). 
-Try making the elements interactive, for example, or animate them.
+- MDN SVG Paths:
+  https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorials/SVG_from_scratch/Paths
+  Used for curves and paths.
 
-Grading
----
-
-Grades are on a 120 point scale. 
-96 points will be graded for functionality: the program does what the assignment requests with an informative README. 
-
-We will use Google Chrome to view submissions. 
-Be sure to test your code there.
-
-Below are some, but not necessarily all, of the key points we will consider during grading:
-
-- Circles and Rectangles  
-- Lines  
-- Paths  
-- Different colors  
-- README Quality
-    - A description of what you have created. 1-2 screenshots are recommended for the README.  
-    - A working link to the hosted files (your GitHub Pages url)  
-    - Section for Technical and Design Achievements
-
-Technical Achievement Description -- 12  
-Design Achievement Description -- 12
-
-Remember, it is up to *you* to define what constitutes a technical and design achievements.
-Be ambitious as these are designed to allow you to shape your learning.
-These are the only way to move from B to A territory.
-
+- ChatGPT (OpenAI):
+  Assisted with JavaScript/D3 implementation,
+  debugging, scene transitions, and SVG shapes.
