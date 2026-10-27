@@ -1,87 +1,33 @@
-Assignment 1 - Hello World: GitHub and d3  
-===
+# Assignment 1 - Hello World: GitHub and d3  
 
-This is a starting project to make sure you can write and host a webpage that generates graphics using d3. 
+## Assignment Link:
+https://a2saur.github.io/a1-ghd3/index.html
 
-The primary goal is to be able to generate graphics primitives (circles, rectangles, lines, polygons) at different locations on the screen with different colors. 
+## Description:
+This is an interactive visual stopwatch. There is a simple analog stopwatch visual made of a circle, lines, and polygons, and a digital stopwatch time made of a rectangle and text. The user can press the start button (a polygon) on the right to start/stop the stopwatch and the reset button (another polygon) on the left to reset the timer. 
 
-The secondary goals are to 1) introduce you to coding on GitHub, including publishing your visualizations with GitHub Pages, and 2) teach you how to host your web-based visualizations on a web-server, which opens up a world of possibilities.
+| | | |
+| :---: | :---: | :---: |
+![Simple stopwatch program, start button blue due to hovering](Stopped_hover.png) | ![Simple stopwatch program at 00:03:17](Running.png) | ![Simple stopwatch program, reset button blue due to hovering](Reset_hover.png)
+| Program on start. This is the simple stopwatch, where the start button (top right of circle) has a mouse hover effect making it blue. | Program running. The stopwatch is at 3 mins and 17 secs, as seen on based on the hands or the digital time below the stopwatch. | Program running. The stopwatch is at 2 seconds and the user is hovering over the reset button, which is currently blue. |
 
-You may write everything from scratch, or start with demo programs from books or the web. 
-If you do start with code that you found on any project, you **must identify** the source of the code in your README and, most importantly, make non-trivial changes to the code to make it your own so you really learn what you're doing.
-For AI-generated code, please see the policy in the syllabus.
+## Achievements
+The program uses various ways to make the program more visually appealing and interactive.
 
-For example, you could download one of the d3.js examples, read it through so you understand what it's doing, and then change the appearance of the graphical output to use different color schemes, different primitive shapes, different layouts of the primitives, and so on.
+### Technical Achievement
+I made the visuals animated and interactive. The program uses the `setInterval` function to update the visualization and uses `addEventListener` function to keep track of mouse movement and clicks. The program updates 4/6 of the svg elements with a few behavior changes based on which "buttons" (svg polygons) the user clicks.
 
-Resources
+### Design Achievement
+Rather than just having a timer text with a couple of buttons, I chose to represent the stopwatch with a visual component and the text component for easy use. I added hover effects to the start/stop and reset buttons to make it easier to understand and have the start/stop button appear like it is physically pressed for a more interactive experience.
+
+
 ---
 
-If you need a JavaScript/HTML/CSS refresher, see [MDN's Learn web development](https://developer.mozilla.org/en-US/docs/Learn_web_development), [Codecademy's Introduction to JavaScript](https://www.codecademy.com/learn/introduction-to-javascript), or find one of your choosing on the web.
+## Sources used in understanding basic D3 Usage:
+- [Stack Overflow - SVG and rect in a div](https://stackoverflow.com/questions/71433100/d3-how-can-i-put-an-svg-into-a-div-via-a-function)
+- [D3 Graph Gallery - Building shapes](https://d3-graph-gallery.com/graph/shape.html)
+- [D3 JS - Line drawing](https://d3js.org/d3-shape/line)
+- [W3 Schools - Polygon](https://www.w3schools.com/graphics/tryit.asp?filename=trysvg_polygon)
+- [Stack Overflow - Adding text](https://stackoverflow.com/questions/20644415/d3-appending-text-to-a-svg-rectangle)
 
-If you need a Git/GitHub refresher, some possible resources include GitHub's [Hello World](https://docs.github.com/en/get-started/using-github/hello-world), [GitHub flow](https://docs.github.com/en/get-started/using-github/github-flow), and [Fork a repository](https://docs.github.com/en/pull-requests/how-tos/work-with-forks/fork-a-repo) guides, [GitHub Skills](https://skills.github.com/), and [Learn Git Branching](https://learngitbranching.js.org/).
-
-Requirements
----
-
-1. Your project should contain at least four kinds of graphics primitives (circles, rectangles, lines, polygons) in different colors. 
-2. Your document should identify the sources of the code if you start with code that you found. 
-3. Your code should be forked from the GitHub repo and published with GitHub Pages. See the "GitHub Details" section below for detailed instructions on how to do this.
-
-GitHub Details
----
-
-- Fork the GitHub Repository for Assignment 1. You now have a copy associated with your username.
-- Make changes to index.html to fulfill the project requirements. 
-- Turn on GitHub Pages for your fork: Settings → Pages → Build and deployment → Source: "Deploy from a branch", Branch: `main`, folder `/ (root)`. See [Configuring a publishing source](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) if you need help. Spend some time learning this if you're new!
-- Edit the README.md with a link to your GitHub Pages site "https://YourUsernameGoesHere.github.io/a1-ghd3/".
-
-Submission Details
----
-- To submit, make a [Pull Request](https://docs.github.com/en/pull-requests/how-tos/create-pull-requests/creating-a-pull-request-from-a-fork) on the original repository.
-- Note: name your pull request using the following scheme: 
-```
-a1-your Gh username-your first name-your lastname
-
-```
-
-Vis Details
----
-
-For this project you should use d3.js. Later projects will use other tools (e.g. Python libraries), but d3 is the industry standard for now.
-You can learn from examples on the [d3.js](https://d3js.org) site or start from scratch.
-
-See [Getting started](https://d3js.org/getting-started) for ways to load d3. To preview your page locally, open index.html in Chrome, or run `python3 -m http.server` in the repo folder and visit http://localhost:8000.
-
-Creative solutions are welcome! In the past I've seen recreations of paintings, interactives, and more.
-
-Please go beyond the minimum requirements of this project-- we've made it SUPER basic so you can explore, or fill in any gaps in your understanding of web coding.
-Experiment with other aspects of the [d3 API](https://d3js.org/api) and the examples in the [D3 gallery](https://observablehq.com/@d3/gallery). 
-Try making the elements interactive, for example, or animate them.
-
-Grading
----
-
-Grades are on a 120 point scale. 
-96 points will be graded for functionality: the program does what the assignment requests with an informative README. 
-
-We will use Google Chrome to view submissions. 
-Be sure to test your code there.
-
-Below are some, but not necessarily all, of the key points we will consider during grading:
-
-- Circles and Rectangles  
-- Lines  
-- Paths  
-- Different colors  
-- README Quality
-    - A description of what you have created. 1-2 screenshots are recommended for the README.  
-    - A working link to the hosted files (your GitHub Pages url)  
-    - Section for Technical and Design Achievements
-
-Technical Achievement Description -- 12  
-Design Achievement Description -- 12
-
-Remember, it is up to *you* to define what constitutes a technical and design achievements.
-Be ambitious as these are designed to allow you to shape your learning.
-These are the only way to move from B to A territory.
-
+Note: these resources were just for getting basic syntax rather than larger sections of code, but I figured I would include it.

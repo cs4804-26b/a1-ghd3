@@ -9,11 +9,198 @@
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script>
     console.log("d3 version", d3.version); // test that d3 loaded
-    // Add an SVG
-    // Add Rectangles
-    // Add Circles
-    // Add Lines
-    // Add Polygons
+    // Center of the timer
+    let cX = 250;
+    let cY = 250;
+    // Timer variables
+    let time = 0;
+    let timerRunning = false;
+    // Hand length variables
+    const SECOND_HAND_LEN = 200;
+    const MINUTE_HAND_LEN = 150;
+    const HOUR_HAND_LEN = 100;
+
+    // Add an SVG - container
+    const svg = d3.select("#container").append("svg")
+                .attr("width", 500)
+                .attr("height", 650);
+                
+    // Add Rectangle - box for time
+    let box = svg.append('rect')
+        .attr('width', 400)
+        .attr('height', 100)
+        .attr('x', 50)
+        .attr('y', 500)
+        .attr('fill', '#0f1c0f')
+        .attr('stroke', '#000000')
+        .attr('stroke-width', '5px');
+
+    // Add Polygon - start & reset button
+    // bbox: (354, 47) --> (429, 120)
+    START_BTN_OFF_POINTS = [
+      [355, 83],
+      [365, 72],
+      [350, 58],
+      [360, 43],
+      [402, 52],
+      [418, 83],
+      [407, 92],
+      [394, 86],
+      [386, 102]
+    ];
+    START_BTN_ON_POINTS = [
+      [355, 82], 
+      [359, 75], 
+      [344, 65], 
+      [349, 53], 
+      [389, 64], 
+      [409, 94], 
+      [397, 110], 
+      [389, 100], 
+      [384, 100]
+    ];
+    let startButton = svg.append("polygon")
+      .attr("points", START_BTN_OFF_POINTS);
+    // bbox: (129, 62) --> (179, 98)
+    let resetButton = svg.append("polygon")
+      .attr("points", [
+        [126, 107],
+        [123, 77],
+        [159, 54],
+        [187, 71],
+        [161, 84],
+      ]);
+
+    // Add Circle - timer
+    let circle = svg.append('circle')
+        .attr('cx', 250)
+        .attr('cy', 250)
+        .attr('r', 200)
+        .attr('stroke', '#000000')
+        .attr('stroke-width', '5px')
+        .attr('fill', '#defffc');
+
+    // Add Lines - hands
+    const points = [
+      [cX, cY],
+      [10, 80],
+      [cX, cY],
+      [10, 80],
+      [cX, cY],
+      [10, 80],
+    ];
+    let path = svg.append("path")
+        .attr("d", d3.line()(points))
+        .attr("fill", "none")
+        .attr("stroke-width", "5px")
+        .attr("stroke", "#000");
+
+    // Add text - timer
+    let text = svg.append("text")
+      .attr("x", 70)
+      .attr("y", 570)
+      .attr("fill", "#fff")
+      .attr("font-size", "75px")
+      .attr("font-family", "Courier New")
+      .text("00:00:00");
+
+    let timeAngle = 0;
+    let timePosOffset = 0;
+    let secondHandPos = [0, 0];
+    let minuteHandPos = [0, 0];
+    let hourHandPos = [0, 0];
+
+    // transform # seconds to HH:MM:SS
+    function timeToText(secTime){
+      let hrs = Math.trunc(secTime/360);
+      let mins = Math.trunc((secTime-(hrs*60))/60);
+      let secs = Math.trunc(secTime-(mins*60));
+
+      let timeStr = "";
+      if (hrs < 10) timeStr += "0";
+      timeStr += hrs.toString();
+      timeStr += ":"
+      if (mins < 10) timeStr += "0";
+      timeStr += mins.toString();
+      timeStr += ":"
+      if (secs < 10) timeStr += "0";
+      timeStr += secs.toString();
+      return timeStr
+    }
+
+    // Get mouse position to check hover
+    // Check start polygon bbox: (354, 47) --> (429, 120)
+    // Check reset polygon bbox: (129, 62) --> (179, 98)
+    document.addEventListener("mousemove", function(e) { 
+      // Start button
+      if ((e.x < 429 && e.x > 354) && (e.y < 120 && e.y > 47)) {
+        startButton.attr("fill", "#00aaff");
+      } else {
+        startButton.attr("fill", "#000000");
+      }
+      // Reset button
+      if ((e.x < 179 && e.x > 129) && (e.y < 98 && e.y > 62)) {
+        resetButton.attr("fill", "#00aaff");
+      } else {
+        resetButton.attr("fill", "#000000");
+      }
+    });
+
+    // Get mouse click position
+    // Check start polygon bbox: (354, 47) --> (429, 120)
+    // Check reset polygon bbox: (129, 62) --> (179, 98)
+    document.addEventListener("mousedown", function(e) { 
+      console.log(e.x.toString()+", "+e.y.toString());
+      // Start button
+      if (e.x < 429 && e.x > 354){
+        if (e.y < 120 && e.y > 47) {
+          timerRunning = !timerRunning;
+          if (timerRunning){
+            startButton.attr("points", START_BTN_ON_POINTS);
+          } else {
+            startButton.attr("points", START_BTN_OFF_POINTS);
+          }
+        }
+      }
+      // Reset button
+      if (e.x < 179 && e.x > 129){
+        if (e.y < 98 && e.y > 62) {
+          time = 0;
+        }
+      }
+    });
+
+
+    function draw(){
+      if (timerRunning){
+        time += 0.1;
+      }
+
+      timeAngle = (time*2*Math.PI)/60;
+      timePosOffset = Math.PI/2;
+      secondHandPos = [
+              cX + (Math.cos(timeAngle - timePosOffset)*SECOND_HAND_LEN), 
+              cY +( Math.sin(timeAngle - timePosOffset)*SECOND_HAND_LEN)];
+      minuteHandPos = [
+              cX + (Math.cos((timeAngle/60)-timePosOffset)*MINUTE_HAND_LEN), 
+              cY +( Math.sin((timeAngle/60)-timePosOffset)*MINUTE_HAND_LEN)];
+      hourHandPos = [
+              cX + (Math.cos((timeAngle/360)-timePosOffset)*HOUR_HAND_LEN), 
+              cY +( Math.sin((timeAngle/360)-timePosOffset)*HOUR_HAND_LEN)];
+      const newPoints = [
+        [cX, cY],
+        secondHandPos,
+        [cX, cY],
+        minuteHandPos,
+        [cX, cY],
+        hourHandPos,
+      ];
+
+      path.attr("d", d3.line()(newPoints));
+      text.text(timeToText(time));
+    }
+
+    let interactive = setInterval(draw, 100);
   </script>
 </body>
 </html>
