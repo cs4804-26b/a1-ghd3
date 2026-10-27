@@ -5,15 +5,167 @@
   <title>A1: Hello World, GitHub and d3</title>
 </head>
 <body>
+  <style>
+    body {
+      background-color: #0B1026;
+      margin: 0;
+      cursor: none;
+    }
+  </style>
   <div id="container"></div>
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script>
     console.log("d3 version", d3.version); // test that d3 loaded
-    // Add an SVG
-    // Add Rectangles
-    // Add Circles
-    // Add Lines
-    // Add Polygons
+    
+    // Declare the chart dimensions and margins.
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    const marginTop = 0;
+    const marginRight = 0;
+    const marginBottom = 0;
+    const marginLeft = 0;
+
+    const svg = d3.select("#container")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height);
+
+    // Stars
+    const numStars = 100;
+    const starsData = [];
+    for (let i = 0; i < numStars; i++) {
+      starsData.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        radius: Math.random() * width / 500 + width / 1000,
+        speed: Math.random() * width / 50 + width / 100
+      });
+    }
+    const stars = svg.selectAll(".star")
+      .data(starsData)
+      .join("circle")
+      .attr("class", "star")
+      .attr("cx", d => d.x)
+      .attr("cy", d => d.y)
+      .attr("r", d => d.radius)
+      .attr("fill", "white");
+
+    // The UFO
+    let ufoX = width / 2;
+    let ufoY = height / 2;
+    const ufoSpeed = width / 5
+
+    const ufo = {
+      x: ufoX,
+      y: ufoY,
+      width: width / 15,
+      height: width / 30
+    };
+
+    const moveLine = svg.append("line")
+      .attr("stroke", "lightgreen")
+      .attr("stroke-width", ufo.width / 30)
+      .attr("stroke-dasharray", "4,4")
+      .attr("opacity", 0.5);
+    
+    const moveCircle = svg.append("circle")
+      .attr("r", ufo.width / 10)
+      .attr("fill", "none")
+      .attr("stroke", "lightgreen")
+      .attr("stroke-width", ufo.width / 50)
+
+    const windowTop = svg.append("ellipse")
+      .attr("rx", ufo.width / 4)
+      .attr("ry", ufo.height / 3)
+      .attr("fill", "skyblue");
+
+    const bottom = svg.append("polygon")
+      .attr("fill", "lightgrey");
+
+    const window1 = svg.append("rect")
+      .attr("width", ufo.width / 10)
+      .attr("height", ufo.width / 12)
+      .attr("fill", "green");
+
+    const window2 = svg.append("rect")
+      .attr("width", ufo.width / 10)
+      .attr("height", ufo.width / 12)
+      .attr("fill", "green");
+
+    const window3 = svg.append("rect")
+      .attr("width", ufo.width / 10)
+      .attr("height", ufo.width / 12)
+      .attr("fill", "green");
+
+    function drawUFO() {
+      moveLine
+        .attr("x1", mouseX)
+        .attr("y1", mouseY)
+        .attr("x2", ufoX)
+        .attr("y2", ufoY);
+
+      moveCircle
+        .attr("cx", mouseX)
+        .attr("cy", mouseY);
+
+      windowTop
+        .attr("cx", ufoX)
+        .attr("cy", ufoY);
+
+      bottom.attr("points", `
+        ${ufoX - ufo.width / 2},${ufoY}
+        ${ufoX + ufo.width / 2},${ufoY}
+        ${ufoX + ufo.width / 3},${ufoY + ufo.height / 2}
+        ${ufoX - ufo.width / 3},${ufoY + ufo.height / 2}
+      `);
+
+      window1
+        .attr("x", ufoX - ufo.width / 4 - ufo.width / 20)
+        .attr("y", ufoY + ufo.height / 4 - ufo.height / 20);
+      window2
+        .attr("x", ufoX - ufo.width / 20)
+        .attr("y", ufoY + ufo.height / 4 - ufo.height / 20);
+      window3
+        .attr("x", ufoX + ufo.width / 4 - ufo.width / 20)
+        .attr("y", ufoY + ufo.height / 4 - ufo.height / 20);
+    }
+
+    // Animation loop
+    let prevTime = d3.now();
+    let mouseX = width / 2;
+    let mouseY = height / 2;
+    d3.timer(() => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      svg.attr("width", width).attr("height", height);
+
+      const currentTime = d3.now();
+      const elapsedSeconds = (d3.now() - prevTime) / 1000;
+      prevTime = d3.now();
+
+      starsData.forEach(star => {
+        star.x -= star.speed * elapsedSeconds;
+
+        if (star.x < -star.radius) {
+          star.x = width + star.radius;
+        }
+      });
+      stars.attr("cx", d => d.x);
+
+      const xDif = mouseX - ufoX;
+      const yDif = mouseY - ufoY;
+      const dist = Math.sqrt(xDif**2 + yDif**2);
+      if (dist > 5) {
+        ufoX += (xDif / dist) * ufoSpeed * elapsedSeconds;
+        ufoY += (yDif / dist) * ufoSpeed * elapsedSeconds;
+      }
+      drawUFO();
+    });
+
+    svg.on("mousemove", function(event) {
+      [mouseX, mouseY] = d3.pointer(event);
+    });
+    
   </script>
 </body>
 </html>
