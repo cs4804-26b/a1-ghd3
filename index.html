@@ -10,10 +10,176 @@
   <script>
     console.log("d3 version", d3.version); // test that d3 loaded
     // Add an SVG
-    // Add Rectangles
-    // Add Circles
-    // Add Lines
-    // Add Polygons
+    const svg = d3.select("#container")
+      .append("svg")
+      .attr("width", 1600)
+      .attr("height", 800)
+      .style("border", "1px solid #ccc");
+  
+    // Sky
+    const sky = svg.append("rect")
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("width", 1600)
+      .attr("height", 700)
+      .attr("fill", "#D4F7FF");  
+
+    // Triangular mountain backgrounds 
+    svg.append("polygon")
+      .attr("points", "0,800 450,150 900,800")
+      .attr("fill", "#949494");
+
+    svg.append("polygon")
+      .attr("points", "900,800 1250,150 1600,800")
+      .attr("fill", "#949494");
+
+    svg.append("polygon")
+      .attr("points", "600,800 900,300 1200,800")
+      .attr("fill", "#949494");
+
+    svg.append("polygon")
+      .attr("points", "0,250 300,500 0,800")
+      .attr("fill", "#949494");
+
+    svg.append("polygon")
+      .attr("points", "1600,200 1300,500 1600,800")
+      .attr("fill", "#949494");
+
+    // Field
+    svg.append("rect")
+      .attr("x", 0)
+      .attr("y", 750)
+      .attr("width", 1600)
+      .attr("height", 100)
+      .attr("fill", "#536952");
+
+    // House
+    svg.append("rect")
+      .attr("x", 50)
+      .attr("y", 550)
+      .attr("width", 300)
+      .attr("height", 200)
+      .attr("fill", "#75470E")
+      .attr("stroke", "#4F2700")
+      .attr("stroke-width", 3);
+
+    svg.append("rect")
+      .attr("x", 250)
+      .attr("y", 650)
+      .attr("width", 70)
+      .attr("height", 100)
+      .attr("fill", "#4F2700")
+
+    svg.append("circle")
+      .attr("cx", 130)
+      .attr("cy", 630)
+      .attr("r", 30)
+      .attr("fill", "#B5A05B");
+
+    svg.append("line")
+      .attr("x1", 100)
+      .attr("y1", 630)
+      .attr("x2", 160)
+      .attr("y2", 630)
+      .attr("stroke", "Black")
+      .attr("stroke-width", 4);  
+
+    svg.append("line")
+      .attr("x1", 130)
+      .attr("y1", 600)
+      .attr("x2", 130)
+      .attr("y2", 660)
+      .attr("stroke", "Black")
+      .attr("stroke-width", 4);  
+
+    // Sun
+    const sun = svg.append("circle")
+      .attr("cx", 80)
+      .attr("cy", 160)
+      .attr("r", 40)
+      .attr("fill", "goldenrod");
+
+    // snowman 
+    svg.append("circle")
+      .attr("cx", 450)
+      .attr("cy", 700)
+      .attr("r", 50)
+      .attr("fill", "#FFFFFF");
+
+    svg.append("circle")
+      .attr("cx", 450)
+      .attr("cy", 615)
+      .attr("r", 35)
+      .attr("fill", "#FFFFFF");
+
+    svg.append("circle")
+      .attr("cx", 450)
+      .attr("cy", 555)
+      .attr("r", 25)
+      .attr("fill", "#FFFFFF");
+
+    svg.append("line")
+      .attr("x1", 400)
+      .attr("y1", 535)
+      .attr("x2", 500)
+      .attr("y2", 535)
+      .attr("stroke", "Black")
+      .attr("stroke-width", 4);  
+      
+    svg.append("rect")
+      .attr("x", 425)
+      .attr("y", 495)
+      .attr("width", 50)
+      .attr("height", 40)
+      .attr("fill", "Black");
+
+    svg.append("circle")
+      .attr("cx", 450)
+      .attr("cy", 600)
+      .attr("r", 3)
+      .attr("fill", "Black");
+
+    svg.append("circle")
+      .attr("cx", 450)
+      .attr("cy", 615)
+      .attr("r", 3)
+      .attr("fill", "Black");
+
+    svg.append("circle")
+      .attr("cx", 450)
+      .attr("cy", 630)
+      .attr("r", 3)
+      .attr("fill", "Black");
+
+    svg.append("circle")
+      .attr("cx", 437)
+      .attr("cy", 550)
+      .attr("r", 2)
+      .attr("fill", "Black");
+
+    svg.append("circle")
+      .attr("cx", 462)
+      .attr("cy", 550)
+      .attr("r", 2)
+      .attr("fill", "Black");
+
+    svg.append("circle")
+      .attr("cx", 450)
+      .attr("cy", 560)
+      .attr("r", 2)
+      .attr("fill", "Black");
+      
+    // hover to change time of day 
+    sun.on("mouseover", () => {
+      sun.transition().duration(500).attr("fill", "white");
+      sky.transition().duration(500).attr("fill", "#151057");
+    });
+
+    sun.on("mouseout", () => {
+      sun.transition().duration(500).attr("fill", "goldenrod");
+      sky.transition().duration(500).attr("fill", "#D4F7FF");
+    });
+
   </script>
 </body>
 </html>
