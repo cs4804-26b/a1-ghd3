@@ -1,19 +1,356 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>A1: Hello World, GitHub and d3</title>
 </head>
-<body>
+
+<body style="background-color: powderblue;">
   <div id="container"></div>
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script>
     console.log("d3 version", d3.version); // test that d3 loaded
-    // Add an SVG
+
+    // Initial setup started from these two sources:
+    // https://d3-graph-gallery.com/graph/shape.html
+    // https://d3js.org/getting-started
+    
+    // SVG Element
+    var svg = d3.select("#container")
+      .append("svg")
+      .attr("width", 700)
+      .attr("height", 600)
+      .style("background-color", "rgb(209, 244, 248)");
+
     // Add Rectangles
+    svg.append("rect")
+      .attr("id", "rectangleBasicTooltip")
+      .attr("x", 300)
+      .attr("y", 300)
+      .attr("width", 200)
+      .attr("height", 100)
+      .style("fill", "blue")
+      .attr("stroke", "black")
+      .attr("stroke-width", 2.5)
+      .style("cursor", "pointer");
+
     // Add Circles
+    svg.append("circle")
+      .attr("id", "circleBasicTooltip")
+      .attr("cx", 75)
+      .attr("cy", 75)
+      .attr("r", 50)
+      .style("fill", "purple")
+      .attr("stroke", "orange")
+      .attr("stroke-width", 5)
+      .style("cursor", "pointer");
+
+
     // Add Lines
+    svg.append("line")
+      .attr("id", "lineBasicTooltip")
+      .attr("x1", 75)
+      .attr("y1", 300)
+      .attr("x2", 300)
+      .attr("y2", 75)
+      .style("stroke", "navy")
+      .style("stroke-width", 5)
+      .style("cursor", "pointer");
+
+
     // Add Polygons
+    svg.append("polygon")
+      .attr("id", "polygonBasicTooltip")
+      .attr("points", "250,250 500,250 500,100")
+      .style("fill", "steelblue")
+      .attr("stroke", "grey")
+      .attr("stroke-width", 3.5)
+      .style("cursor", "pointer");
+
+    // Additional Shape #1: Arc
+    svg
+      .append("path")
+      .attr("id", "arcBasicTooltip")
+      .attr("transform", "translate(100,400)")
+      .attr("d", d3.arc()
+        .innerRadius(50)
+        .outerRadius(75)
+        .startAngle(3.14)
+        .endAngle(6.28)
+      )
+      .attr('stroke', 'black')
+      .attr('fill', 'yellow')
+      .attr("stroke-width", 5)
+      .style("cursor", "pointer");
+
+    // Additional Shape #2: Wye
+    svg
+      .append("path")
+      .attr("id", "wyeBasicTooltip")
+      .attr("transform", "translate(400,450)")
+      .attr("d", d3.symbol().type(d3.symbolWye).size(2000))
+      .attr('stroke', 'pink')
+      .attr('fill', 'green')
+      .attr("stroke-width", 3)
+      .style("cursor", "pointer");
+
+
+    // Labels for each shape
+
+    // First, a title for the page
+    svg.append("text")
+      .attr("x", 350)
+      .attr("y", 30)
+      .attr("text-anchor", "middle")
+      .attr("class", "title")
+      .text("Basic Shapes with d3.js")
+      .style("font-family", "Comic Sans MS, Comic Sans, cursive")
+      .style("font-size", "30px")
+      .style("fill", "black");
+
+    // Rectangle
+    svg.append("text")
+      .attr("x", 400)
+      .attr("y", 395)
+      .attr("class", "shape-label")
+      .text("Rectangle")
+      .style("font-family", "'Open Sans', sans-serif")
+      .style("font-size", "20px")
+      .style("fill", "white");
+
+    // Polygon (Triangle)
+    svg.append("text")
+      .attr("x", 325)
+      .attr("y", 245)
+      .attr("class", "shape-label")
+      .text("Polygon (Triangle)")
+      .style("font-family", "'Open Sans', sans-serif")
+      .style("font-size", "20px")
+      .style("fill", "black");
+
+    // Circle
+    svg.append("text")
+      .attr("x", 45)
+      .attr("y", 150)
+      .attr("class", "shape-label")
+      .text("Circle")
+      .style("font-family", "'Open Sans', sans-serif")
+      .style("font-size", "20px")
+      .style("fill", "black");
+
+    // Line
+    svg.append("text")
+      .attr("x", 150)
+      .attr("y", 200)
+      .attr("class", "shape-label")
+      .text("Line")
+      .style("font-family", "'Open Sans', sans-serif")
+      .style("font-size", "20px")
+      .style("fill", "black")
+      .attr("transform", "rotate(-45, 150, 200)");
+
+    // Arc
+    svg.append("text")
+      .attr("x", 110)
+      .attr("y", 470)
+      .attr("class", "shape-label")
+      .text("Arc")
+      .style("font-family", "'Open Sans', sans-serif")
+      .style("font-size", "20px")
+      .style("fill", "black");
+
+    // Wye
+    svg.append("text")
+      .attr("x", 400)
+      .attr("y", 500)
+      .attr("class", "shape-label")
+      .text("Wye")
+      .style("font-family", "'Open Sans', sans-serif")
+      .style("font-size", "20px")
+      .style("fill", "black");
+
+
+    // Tooltips
+    var tooltip = d3.select("#container")
+      .append("div")
+      .style("position", "absolute")
+      .style("visibility", "hidden")
+      .style("font-family", "'Open Sans', sans-serif")
+      .style("font-size", "16px")
+      .style("color", "white")
+      .style("background-color", "rgba(0, 0, 0, 0.8)")
+      .style("padding", "5px")
+      .text("This is a circle.");
+
+    var tooltip2 = d3.select("#container")
+      .append("div")
+      .style("position", "absolute")
+      .style("visibility", "hidden")
+      .style("font-family", "'Open Sans', sans-serif")
+      .style("font-size", "16px")
+      .style("color", "white")
+      .style("background-color", "rgba(0, 0, 0, 0.8)")
+      .style("padding", "5px")
+      .text("This is a rectangle.");
+
+    var tooltip3 = d3.select("#container")
+      .append("div")
+      .style("position", "absolute")
+      .style("visibility", "hidden")
+      .style("font-family", "'Open Sans', sans-serif")
+      .style("font-size", "16px")
+      .style("color", "white")
+      .style("background-color", "rgba(0, 0, 0, 0.8)")
+      .style("padding", "5px")
+      .text("This is a line.");
+
+    var tooltip4 = d3.select("#container")
+      .append("div")
+      .style("position", "absolute")
+      .style("visibility", "hidden")
+      .style("font-family", "'Open Sans', sans-serif")
+      .style("font-size", "16px")
+      .style("color", "white")
+      .style("background-color", "rgba(0, 0, 0, 0.8)")
+      .style("padding", "5px")
+      .text("This is a triangle.");
+
+    var tooltip5 = d3.select("#container")
+      .append("div")
+      .style("position", "absolute")
+      .style("visibility", "hidden")
+      .style("font-family", "'Open Sans', sans-serif")
+      .style("font-size", "16px")
+      .style("color", "white")
+      .style("background-color", "rgba(0, 0, 0, 0.8)")
+      .style("padding", "5px")
+      .text("This is an arc.");
+
+    var tooltip6 = d3.select("#container")
+      .append("div")
+      .style("position", "absolute")
+      .style("visibility", "hidden")
+      .style("font-family", "'Open Sans', sans-serif")
+      .style("font-size", "16px")
+      .style("color", "white")
+      .style("background-color", "rgba(0, 0, 0, 0.8)")
+      .style("padding", "5px")
+      .text("This is a wye.");
+
+    d3.select("#circleBasicTooltip")
+      .on("mouseover", () => tooltip.style("visibility", "visible"))
+      .on("mousemove", () => tooltip.style("top", (event.offsetY - 30) + "px").style("left", (event.offsetX + 10) + "px"))
+      .on("mouseout", () => tooltip.style("visibility", "hidden"));
+
+    d3.select("#rectangleBasicTooltip")
+      .on("mouseover", () => tooltip2.style("visibility", "visible"))
+      .on("mousemove", () => tooltip2.style("top", (event.offsetY - 30) + "px").style("left", (event.offsetX + 10) + "px"))
+      .on("mouseout", () => tooltip2.style("visibility", "hidden"));
+
+    d3.select("#lineBasicTooltip")
+      .on("mouseover", () => tooltip3.style("visibility", "visible"))
+      .on("mousemove", () => tooltip3.style("top", (event.offsetY - 30) + "px").style("left", (event.offsetX + 10) + "px"))
+      .on("mouseout", () => tooltip3.style("visibility", "hidden"));
+
+    d3.select("#polygonBasicTooltip")
+      .on("mouseover", () => tooltip4.style("visibility", "visible"))
+      .on("mousemove", () => tooltip4.style("top", (event.offsetY - 30) + "px").style("left", (event.offsetX + 10) + "px"))
+      .on("mouseout", () => tooltip4.style("visibility", "hidden"));
+
+    d3.select("#arcBasicTooltip")
+      .on("mouseover", () => tooltip5.style("visibility", "visible"))
+      .on("mousemove", () => tooltip5.style("top", (event.offsetY - 30) + "px").style("left", (event.offsetX + 10) + "px"))
+      .on("mouseout", () => tooltip5.style("visibility", "hidden"));
+
+    d3.select("#wyeBasicTooltip")
+      .on("mouseover", () => tooltip6.style("visibility", "visible"))
+      .on("mousemove", () => tooltip6.style("top", (event.offsetY - 30) + "px").style("left", (event.offsetX + 10) + "px"))
+      .on("mouseout", () => tooltip6.style("visibility", "hidden"));
+
+
+    // Highlight Shapes on Hover
+    ["circle", "rectangle", "line", "polygon", "arc", "wye"].forEach(name => {
+      d3.select("#" + name + "BasicTooltip")
+        .on("mouseover.fade", function () { d3.select(this).style("fill-opacity", 0.5); })
+        .on("mouseout.fade", function () { d3.select(this).style("fill-opacity", 1); });
+    });
+
+    // Linked Views
+    const shapes = [
+      { id: "rectangleBasicTooltip", label: "Rectangle", description: "A rectangle is a quadrilateral with four right angles." },
+      { id: "circleBasicTooltip", label: "Circle", description: "A circle is a shape consisting of all points in a plane that are at a given distance from a given point." },
+      { id: "lineBasicTooltip", label: "Line", description: "A line is a straight one-dimensional figure that extends infinitely in both directions. (This is technically a line segment)" },
+      { id: "polygonBasicTooltip", label: "Polygon (Triangle)", description: "A triangle is a three-sided polygon." },
+      { id: "arcBasicTooltip", label: "Arc", description: "An arc is a portion of the circumference of a circle." },
+      { id: "wyeBasicTooltip", label: "Wye", description: "A wye is a three-pronged symbol used in electrical engineering." }
+    ]; // Descriptions of the shapes were generated automatically by VSCode autofill
+
+    // Description info box
+    const infoBox = d3.select("#container")
+      .append("div")
+      .attr("id", "infoBox")
+      .style("position", "absolute")
+      .style("top", "10px")
+      .style("right", "10px")
+      .style("width", "250px")
+      .style("padding", "10px")
+      .style("background-color", "rgba(255, 255, 255, 0.8)")
+      .style("border", "1px solid #ccc")
+      .style("border-radius", "5px")
+      .style("font-family", "'Open Sans', sans-serif")
+      .style("font-size", "20px")
+      .text("Click on a shape to see its information here.");
+
+    // Second info box for external links
+    const infoBox2 = d3.select("#container")
+      .append("div")
+      .attr("id", "infoBox2")
+      .style("position", "absolute")
+      .style("bottom", "10px")
+      .style("right", "10px")
+      .style("width", "250px")
+      .style("padding", "10px")
+      .style("background-color", "rgba(255, 255, 255, 0.8)")
+      .style("border", "1px solid #ccc")
+      .style("border-radius", "5px")
+      .style("font-family", "'Open Sans', sans-serif")
+      .style("font-size", "20px")
+      .text("Links to the shapes' Wikipedia pages will appear here when you click on a shape.");
+
+    // On click, display shape Wikipedia link in the second info box
+    shapes.forEach(shape => {
+      d3.select("#" + shape.id)
+        .on("click", () => {
+          infoBox.html(`<strong>${shape.label}</strong><br>${shape.description}`);
+          let wikiLink = "";
+          switch (shape.label) {
+            case "Rectangle":
+              wikiLink = "https://en.wikipedia.org/wiki/Rectangle";
+              break;
+            case "Circle":
+              wikiLink = "https://en.wikipedia.org/wiki/Circle";
+              break;
+            case "Line":
+              wikiLink = "https://en.wikipedia.org/wiki/Line_(geometry)";
+              break;
+            case "Polygon (Triangle)":
+              wikiLink = "https://en.wikipedia.org/wiki/Triangle";
+              break;
+            case "Arc":
+              wikiLink = "https://en.wikipedia.org/wiki/Arc_(geometry)";
+              break;
+            case "Wye":
+              wikiLink = "https://en.wikipedia.org/wiki/Y-%CE%94_transform";
+              break;
+          }
+          infoBox2.html(
+            `Wikipedia Page: <a href="${wikiLink}" target="_blank">${shape.label}</a>`
+          );
+        });
+    });
+
   </script>
 </body>
+
 </html>
