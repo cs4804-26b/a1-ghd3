@@ -6,14 +6,172 @@
 </head>
 <body>
   <div id="container"></div>
+  <h1>A walk on a Sunny Day - John Regan</h1>
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script>
     console.log("d3 version", d3.version); // test that d3 loaded
-    // Add an SVG
-    // Add Rectangles
-    // Add Circles
-    // Add Lines
-    // Add Polygons
+
+    // base canvas
+    const svg = d3.select("#container")
+      .append("svg")
+      .attr("width", 1600)
+      .attr("height", 600)
+      .style("border", "1px solid #ccc");
+
+    // sky
+    svg.append("rect")
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("width", 1600)
+      .attr("height", 500)
+      .attr("fill", "lightblue");
+
+    // grass
+    svg.append("rect")
+      .attr("x", 0)
+      .attr("y", 500)
+      .attr("width", 1600)
+      .attr("height", 100)
+      .attr("fill", "green");
+    
+    // right sun ray
+    svg.append("polygon")
+      .attr("points", "175,113 175,127 215,120")
+      .attr("fill", "orange");
+
+    // lower-right sun ray
+    svg.append("polygon")
+      .attr("points", "153,164 142,171 168,202")
+      .attr("fill", "orange");
+
+    // lower-left sun ray
+    svg.append("polygon")
+      .attr("points", "98,171 87,164 72,202")
+      .attr("fill", "orange");
+
+    // left sun ray
+    svg.append("polygon")
+      .attr("points", "65,127 65,113 25,120")
+      .attr("fill", "orange");
+
+    // upper-left sun ray
+    svg.append("polygon")
+      .attr("points", "87,76 98,69 72,38")
+      .attr("fill", "orange");
+
+    // upper-right sun ray
+    svg.append("polygon")
+      .attr("points", "142,69 153,76 168,38")
+      .attr("fill", "orange");
+
+    // sun (after to hide the corners of the rays behind the circle)
+    svg.append("circle")
+      .attr("cx", 120)
+      .attr("cy", 120)
+      .attr("r", 60)
+      .attr("fill", "yellow");
+
+    // left cloud
+    const leftCloud = svg.append("rect")
+      .attr("x", 400)
+      .attr("y", 90)
+      .attr("width", 200)
+      .attr("height", 60)
+      .attr("fill", "white");
+
+    // middle cloud
+    const middleCloud = svg.append("rect")
+      .attr("x", 850)
+      .attr("y", 50)
+      .attr("width", 240)
+      .attr("height", 70)
+      .attr("fill", "white");
+
+    // right cloud
+    const rightCloud = svg.append("rect")
+      .attr("x", 1250)
+      .attr("y", 120)
+      .attr("width", 200)
+      .attr("height", 60)
+      .attr("fill", "white");
+
+    // drift the clouds to the right, wrapping back around the left edge
+    const clouds = [
+      { shape: leftCloud, x: 400, width: 200, speed: 30 },
+      { shape: middleCloud, x: 850, width: 240, speed: 20 },
+      { shape: rightCloud, x: 1250, width: 200, speed: 40 }
+    ];
+
+    d3.timer(elapsed => {
+      clouds.forEach(cloud => {
+        const travel = 1600 + cloud.width;
+        const left = (cloud.x + cloud.width + elapsed / 1000 * cloud.speed) % travel - cloud.width;
+        cloud.shape.attr("x", left);
+      });
+    });
+
+    // person's left foot
+    svg.append("line")
+      .attr("x1", 600).attr("y1", 500)
+      .attr("x2", 625).attr("y2", 500)
+      .attr("stroke", "red")
+      .attr("stroke-width", 4);
+
+    // person's right foot
+    svg.append("line")
+      .attr("x1", 635).attr("y1", 500)
+      .attr("x2", 660).attr("y2", 500)
+      .attr("stroke", "red")
+      .attr("stroke-width", 4);
+
+    // person's left leg
+    svg.append("line")
+      .attr("x1", 600).attr("y1", 500)
+      .attr("x2", 600).attr("y2", 450)
+      .attr("stroke", "blue")
+      .attr("stroke-width", 4);
+
+    // person's right leg
+    svg.append("line")
+      .attr("x1", 635).attr("y1", 500)
+      .attr("x2", 635).attr("y2", 450)
+      .attr("stroke", "blue")
+      .attr("stroke-width", 4);
+
+    // person's body
+    svg.append("rect")
+      .attr("x", 595)
+      .attr("y", 380)
+      .attr("width", 45)
+      .attr("height", 70)
+      .attr("fill", "blue");
+
+    // person's left arm
+    svg.append("line")
+      .attr("x1", 595).attr("y1", 390)
+      .attr("x2", 575).attr("y2", 430)
+      .attr("stroke", "blue")
+      .attr("stroke-width", 4);
+
+    // person's right arm
+    svg.append("line")
+      .attr("x1", 640).attr("y1", 390)
+      .attr("x2", 660).attr("y2", 430)
+      .attr("stroke", "blue")
+      .attr("stroke-width", 4);
+    
+    // person's head
+        svg.append("circle")
+      .attr("cx", 618)
+      .attr("cy", 360)
+      .attr("r", 20)
+      .attr("fill", "red");
+
+    // person's hat
+    svg.append("polygon")
+      .attr("points", "598,342 638,342 618,305")
+      .attr("fill", "purple");
+
   </script>
 </body>
 </html>
