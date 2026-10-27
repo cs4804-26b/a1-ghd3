@@ -9,11 +9,203 @@
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script>
     console.log("d3 version", d3.version); // test that d3 loaded
+
     // Add an SVG
+
+    const svg = d3.select("#container")
+      .append("svg")
+      .attr("width", 1520)
+      .attr("height", 675)
+      .style("background-color", "black");
+
     // Add Rectangles
+
+    svg.append("rect")
+      .attr("x", 50)
+      .attr("y", 130)
+      .attr("width", 200)
+      .attr("height", 500)
+      .attr("fill", "blue");
+
+    svg.append("rect")
+      .attr("x", 300)
+      .attr("y", 180)
+      .attr("width", 200)
+      .attr("height", 450)
+      .attr("fill", "green");
+
+    svg.append("rect")
+      .attr("x", 550)
+      .attr("y", 150)
+      .attr("width", 200)
+      .attr("height", 480)
+      .attr("fill", "red");
+
+    svg.append("rect")
+      .attr("x", 800)
+      .attr("y", 100)
+      .attr("width", 200)
+      .attr("height", 530)
+      .attr("fill", "yellow");
+
+    svg.append("rect")
+      .attr("x", 1050)
+      .attr("y", 200)
+      .attr("width", 200)
+      .attr("height", 430)
+      .attr("fill", "purple");
+
+      svg.append("rect")
+      .attr("x", 1300)
+      .attr("y", 250)
+      .attr("width", 200)
+      .attr("height", 380)
+      .attr("fill", "orange");
+
+    for(let i = 0; i < 3; i++) {
+      for(let j = 0; j < 8; j++) {
+        svg.append("rect")
+          .attr("x", 80 + i * 55)
+          .attr("y", 160 + j * 55)
+          .attr("width", 25)
+          .attr("height", 35)
+          .attr("fill", "lightyellow");
+      }
+    }
+
+    for(let i = 0; i < 3; i++) {
+      for(let j = 0; j < 7; j++) {
+        svg.append("rect")
+          .attr("x", 330 + i * 55)
+          .attr("y", 210 + j * 55)
+          .attr("width", 25)
+          .attr("height", 35)
+          .attr("fill", "lightyellow");
+      }
+    }
+
+    for(let i = 0; i < 3; i++) {
+      for(let j = 0; j < 8; j++) {
+        svg.append("rect")
+          .attr("x", 580 + i * 55)
+          .attr("y", 180 + j * 55)
+          .attr("width", 25)
+          .attr("height", 35)
+          .attr("fill", "lightyellow");
+      }
+    }
+
+    for(let i = 0; i < 3; i++) {
+      for(let j = 0; j < 9; j++) {
+        svg.append("rect")
+          .attr("x", 830 + i * 55)
+          .attr("y", 130 + j * 55)
+          .attr("width", 25)
+          .attr("height", 35)
+          .attr("fill", "orange");
+      }
+    }
+
+    for(let i = 0; i < 3; i++) {
+      for(let j = 0; j < 7; j++) {
+        svg.append("rect")
+          .attr("x", 1080 + i * 55)
+          .attr("y", 230 + j * 55)
+          .attr("width", 25)
+          .attr("height", 35)
+          .attr("fill", "lightyellow");
+      }
+    }
+
+    for(let i = 0; i < 3; i++) {
+      for(let j = 0; j < 6; j++) {
+        svg.append("rect")
+          .attr("x", 1330 + i * 55)
+          .attr("y", 280 + j * 55)
+          .attr("width", 25)
+          .attr("height", 35)
+          .attr("fill", "lightyellow");
+      }
+    }
+
+    svg.append("rect")
+      .attr("x", 0)
+      .attr("y", 630)
+      .attr("width", 1550)
+      .attr("height", 45)
+      .attr("fill", "grey")
+
     // Add Circles
+
+    svg.append("circle")
+      .attr("cx", 1350)
+      .attr("cy", 100)
+      .attr("r", 45)
+      .attr("fill", "lightyellow");
+
+    svg.append("circle")
+      .attr("cx", 1368)
+      .attr("cy", 90)
+      .attr("r", 40)
+      .attr("fill", "black");
+
+    for(let i = 0; i < 100; i++) {
+      const star = svg.append("circle")
+        .attr("cx", Math.random() * 1520)
+        .attr("cy", Math.random() * 150)
+        .attr("r", Math.random() * 3 + 1)
+        .attr("fill", "yellow");
+
+      function twinkle() {
+        star.transition()
+        .duration(500 + Math.random() * 1500)
+        .attr("opacity", 0.2)
+        .transition()
+        .duration(500 + Math.random() * 1500)
+        .attr("opacity", 1)
+        .on("end", twinkle);
+      }
+
+      twinkle();
+    }
+
     // Add Lines
+
+    for (let i = 0; i < 10; i++) {
+      svg.append("line")
+        .attr("x1", 30 + i * 160)
+        .attr("y1", 652)
+        .attr("x2", 110 + i * 160)
+        .attr("y2", 652)
+        .attr("stroke", "white")
+        .attr("stroke-width", 5);
+    }
     // Add Polygons
+
+    svg.append("polygon")
+      .attr("points", "50,130 150,60 250,130")
+      .attr("fill", "darkblue");
+
+    svg.append("polygon")
+      .attr("points", "300,180 400,110 500,180")
+      .attr("fill", "darkgreen");
+
+    svg.append("polygon")
+      .attr("points", "550,150 650,80 750,150")
+      .attr("fill", "darkred");
+
+    svg.append("polygon")
+      .attr("points", "800,100 900,30 1000,100")
+      .attr("fill", "goldenrod");
+
+    svg.append("polygon")
+      .attr("points", "1050,200 1150,130 1250,200")
+      .attr("fill", "indigo");
+
+    svg.append("polygon")
+      .attr("points", "1300,250 1400,180 1500,250")
+      .attr("fill", "darkorange");
+
   </script>
 </body>
 </html>
