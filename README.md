@@ -8,7 +8,7 @@ I used all four different types of SVG graphics primitives which were asked for 
 
 ## GitHub Pages Link
 
-[View My Visualization](https://YOUR-USERNAME.github.io/a1-ghd3/)
+[View My Visualization]( https://ghav811.github.io/a1-ghd3-raghavan-rajkumar/)
 
 ## Technical Achievement
 
