@@ -5,15 +5,129 @@
   <title>A1: Hello World, GitHub and d3</title>
 </head>
 <body>
+  <button id="eatBttn"></button>
   <div id="container"></div>
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script>
     console.log("d3 version", d3.version); // test that d3 loaded
     // Add an SVG
-    // Add Rectangles
-    // Add Circles
-    // Add Lines
-    // Add Polygons
+    const width = 700;
+    const height = 700;
+
+
+    const svg = d3.select("#container")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height);
+
+    // Box
+    svg.append("rect")
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("width", width)
+      .attr("height", height)
+      .attr("fill", "brown")
+      .attr("stroke", "brown")
+    
+    
+
+
+    // Pizza base
+    const centerX = width / 2;
+    const centerY = height / 2;
+    const innerR = width / 2 - 40
+
+    svg.append("circle")
+      .attr("cx", centerX)
+      .attr("cy", centerY)
+      .attr("r", width / 2 - 20)
+      .attr("fill", "rgb(181, 101, 29)");
+
+    // Cheese layer
+    svg.append("circle")
+      .attr("cx", centerX)
+      .attr("cy", centerY)
+      .attr("r", width / 2 - 40)
+      .attr("fill", "rgb(255, 255, 0)");
+
+    // Pepperoni
+    const pepperoniData = [
+      { x: -230, y: 0 },
+      { x: 230,  y: 100 },
+      { x: 100,  y: -200 },
+      { x: 200,  y: -40 },
+      { x: 0,    y: 200 },
+      { x: -150, y: -150 },
+      { x: 0,   y: 0 }
+    ];
+
+    svg.selectAll(".pepperoni")
+      .data(pepperoniData)
+      .join("circle")
+        .attr("class", "pepperoni")
+        .attr("cx", d => centerX + d.x)
+        .attr("cy", d => centerY + d.y)
+        .attr("r", 45)
+        .attr("fill", "rgb(255, 0, 0)");
+
+    // Cut marks
+    const eighth = Math.PI / 4; // 45 degrees in radians
+    const cutData = [
+      { x1: 40, y1: centerY, x2: width - 40, y2: centerY},
+      { x1: centerX, y1: 40, x2: centerX, y2: height-40},
+      { x1: centerX + innerR * Math.cos(eighth * 7), y1: centerY + innerR * Math.sin(eighth * 7), x2: centerX + innerR * Math.cos(eighth * 3), y2: centerY + innerR * Math.sin(eighth * 3)},
+      { x1: centerX + innerR * Math.cos(eighth * 1), y1: centerY + innerR * Math.sin(eighth * 1), x2: centerX + innerR * Math.cos(eighth * 5), y2: centerY + innerR * Math.sin(eighth * 5)}
+    ]
+
+    svg.selectAll(".cut")
+      .data(cutData)
+      .join("line")
+        .attr("class", "cut")
+        .attr("x1", d => d.x1)
+        .attr("y1", d => d.y1)
+        .attr("x2", d => d.x2)
+        .attr("y2", d => d.y2)
+        .attr("stroke", "orange")
+
+    // Eat a slice!
+    let eaten = 0;
+
+    const button = d3.select("#eatBttn")
+
+    function updateLabel() {
+      button.text(eaten === 8 ? "Order a new pizza!" : "Eat a slice!");
+    }
+
+    // Arc generator for one slice, covering the whole pizza
+    const arc = d3.arc()
+      .innerRadius(0)
+      .outerRadius(width / 2 - 20);   // same radius as the crust
+
+    updateLabel()
+
+    d3.select("#eatBttn")
+      .text(eaten === 7 ? "Order a new pizza!" : "Eat a slice!")
+      .on("click", () => {
+        if (eaten < 8) {
+          svg.append("path")
+            .attr("class", "bite")
+            .attr("transform", `translate(${centerX}, ${centerY})`)
+            .attr("d", arc({
+              startAngle: eaten * eighth,
+              endAngle: ((eaten + 1) * eighth)
+            }))
+            .attr("fill", "brown")
+            .attr("stroke", "brown")
+          
+            eaten++;
+        } else {
+          svg.selectAll(".bite").remove();
+          eaten = 0;
+        }
+
+        updateLabel()
+      })
+
   </script>
 </body>
 </html>
