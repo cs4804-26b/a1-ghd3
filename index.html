@@ -1,19 +1,205 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="utf-8">
-  <title>A1: Hello World, GitHub and d3</title>
+  <title>A1 - Aquarium</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      background-color: #f0f0f0;
+    }
+    button {
+      font-size: 16px;
+      padding: 6px 14px;
+      margin: 4px;
+    }
+    .fish {
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-  <div id="container"></div>
-  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-  <script>
-    console.log("d3 version", d3.version); // test that d3 loaded
-    // Add an SVG
-    // Add Rectangles
-    // Add Circles
-    // Add Lines
-    // Add Polygons
-  </script>
+  <h1>My Aquarium</h1>
+  <p>Click a fish to make it turn around. Hover over things to see their names.</p>
+  <button id="feedButton">Feed the fish</button>
+  <button id="lightButton">Lights off</button>
+  <br><br>
+  <svg width="700" height="450"></svg>
+
+<script>
+var svg = d3.select("svg")
+
+// water
+var water = svg.append("rect")
+  .attr("x", 0)
+  .attr("y", 0)
+  .attr("width", 700)
+  .attr("height", 450)
+  .attr("fill", "#3a9ad9")
+
+// light rays
+var rays = svg.append("g")
+for (var i = 0; i < 5; i++) {
+  rays.append("line")
+    .attr("x1", 80 + i * 130)
+    .attr("y1", 0)
+    .attr("x2", 40 + i * 130)
+    .attr("y2", 390)
+    .attr("stroke", "white")
+    .attr("stroke-width", 12)
+    .attr("opacity", 0.15)
+}
+
+// sand
+svg.append("rect")
+  .attr("x", 0)
+  .attr("y", 390)
+  .attr("width", 700)
+  .attr("height", 60)
+  .attr("fill", "khaki")
+
+// rocks
+svg.append("polygon")
+  .attr("points", "180,395 200,360 240,350 270,370 280,395")
+  .attr("fill", "gray")
+  .append("title").text("rock")
+svg.append("polygon")
+  .attr("points", "400,395 415,375 445,370 460,395")
+  .attr("fill", "dimgray")
+  .append("title").text("small rock")
+
+// seaweed
+var seaweedSpots = [50, 80, 330, 520, 555]
+for (var i = 0; i < seaweedSpots.length; i++) {
+  var x = seaweedSpots[i]
+  svg.append("path")
+    .attr("d", "M " + x + " 395 Q " + (x - 25) + " 330 " + x + " 280 Q " + (x + 25) + " 230 " + x + " 180")
+    .attr("fill", "none")
+    .attr("stroke", "seagreen")
+    .attr("stroke-width", 7)
+    .append("title").text("seaweed")
+}
+
+// air stone
+svg.append("rect")
+  .attr("x", 615)
+  .attr("y", 380)
+  .attr("width", 30)
+  .attr("height", 12)
+  .attr("rx", 4)
+  .attr("fill", "slategray")
+  .append("title").text("air stone")
+
+// fish
+function makeFish(x, y, color, name) {
+  var fish = svg.append("g")
+    .attr("class", "fish")
+    .attr("transform", "translate(" + x + "," + y + ")")
+
+  // tail
+  fish.append("polygon")
+    .attr("points", "-30,0 -55,-18 -55,18")
+    .attr("fill", color)
+  // body
+  fish.append("ellipse")
+    .attr("rx", 35)
+    .attr("ry", 18)
+    .attr("fill", color)
+  // eye
+  fish.append("circle")
+    .attr("cx", 18)
+    .attr("cy", -5)
+    .attr("r", 4)
+    .attr("fill", "black")
+
+  fish.append("title").text(name)
+
+  // flip
+  var flipped = false
+  fish.on("click", function() {
+    if (flipped) {
+      fish.attr("transform", "translate(" + x + "," + y + ")")
+      flipped = false
+    } else {
+      fish.attr("transform", "translate(" + x + "," + y + ") scale(-1,1)")
+      flipped = true
+    }
+  })
+}
+
+makeFish(150, 100, "orange", "Goldie")
+makeFish(420, 170, "tomato", "Red")
+makeFish(250, 280, "gold", "Sunny")
+makeFish(550, 90, "orchid", "Purple Pete")
+
+// hover
+d3.selectAll(".fish")
+  .on("mouseover", function() {
+    d3.select(this).attr("opacity", 0.7)
+  })
+  .on("mouseout", function() {
+    d3.select(this).attr("opacity", 1)
+  })
+
+// label
+svg.append("text")
+  .attr("x", 350)
+  .attr("y", 430)
+  .attr("text-anchor", "middle")
+  .attr("font-size", 18)
+  .attr("fill", "saddlebrown")
+  .text("4 fish live here")
+
+// bubbles
+function makeBubble() {
+  svg.append("circle")
+    .attr("cx", 630)
+    .attr("cy", 380)
+    .attr("r", 5)
+    .attr("fill", "none")
+    .attr("stroke", "white")
+    .attr("stroke-width", 2)
+    .transition()
+    .duration(3000)
+    .ease(d3.easeLinear)
+    .attr("cy", -10)
+    .remove()
+}
+setInterval(makeBubble, 1000)
+
+// feed button
+d3.select("#feedButton").on("click", function() {
+  for (var i = 0; i < 8; i++) {
+    svg.append("circle")
+      .attr("cx", 100 + Math.random() * 500)
+      .attr("cy", 0)
+      .attr("r", 4)
+      .attr("fill", "sienna")
+      .transition()
+      .duration(2000)
+      .ease(d3.easeLinear)
+      .attr("cy", 388)
+      .remove()
+  }
+})
+
+// light button
+var lightsOn = true
+d3.select("#lightButton").on("click", function() {
+  if (lightsOn) {
+    water.attr("fill", "#0b2545")
+    rays.attr("opacity", 0)
+    d3.select("#lightButton").text("Lights on")
+    lightsOn = false
+  } else {
+    water.attr("fill", "#3a9ad9")
+    rays.attr("opacity", 1)
+    d3.select("#lightButton").text("Lights off")
+    lightsOn = true
+  }
+})
+</script>
 </body>
 </html>
