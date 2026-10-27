@@ -33,7 +33,7 @@ GitHub Details
 - Fork the GitHub Repository for Assignment 1. You now have a copy associated with your username.
 - Make changes to index.html to fulfill the project requirements. 
 - Turn on GitHub Pages for your fork: Settings → Pages → Build and deployment → Source: "Deploy from a branch", Branch: `main`, folder `/ (root)`. See [Configuring a publishing source](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) if you need help. Spend some time learning this if you're new!
-- Edit the README.md with a link to your GitHub Pages site "https://YourUsernameGoesHere.github.io/a1-ghd3/".
+- Edit the README.md with a link to your GitHub Pages site "https://cfoley381.github.io/a1-ghd3/".
 
 Submission Details
 ---
@@ -85,3 +85,7 @@ Remember, it is up to *you* to define what constitutes a technical and design ac
 Be ambitious as these are designed to allow you to shape your learning.
 These are the only way to move from B to A territory.
 
+
+What I created: 
+<img width="2940" height="1912" alt="image" src="https://github.com/user-attachments/assets/d731d4d8-f89c-43fb-a342-c5dd23307aef" />
+An Ice cream cone with a line and rectangle in the background.

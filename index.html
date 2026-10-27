@@ -1,19 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>A1: Hello World, GitHub and d3</title>
+    <meta charset="utf-8">
+    <title>A1: Hello World, GitHub and d3</title>
 </head>
 <body>
-  <div id="container"></div>
-  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-  <script>
+<div id="container"></div>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script>
     console.log("d3 version", d3.version); // test that d3 loaded
-    // Add an SVG
-    // Add Rectangles
-    // Add Circles
+    const svg = d3.select("#container")
+        .append("svg")
+        .attr("width", 1000)
+        .attr("height", 1000);
+
+    // Circle
+    svg.append("circle")
+        .attr("cx", 210)
+        .attr("cy", 150)
+        .attr("r", 110)
+        .attr("fill", "blue")
+        .attr("class", "circle");
+
+    // Rectangle
+    svg.append("rect")
+        .attr("x", 500)
+        .attr("y", 700)
+        .attr("width", 200)
+        .attr("height", 100)
+        .attr("fill", "lightblue")
+        .attr("stroke", "green")
+        .attr("class", "rect");
+
     // Add Lines
+    svg.append("line")
+        .attr("x1", 400)
+        .attr("y1", 400)
+        .attr("x2", 600)
+        .attr("y2", 600)
+        .attr("stroke", "green")
+        .attr("stroke-width", 2)
+        .attr("class", "line");
     // Add Polygons
-  </script>
+    svg.append("polygon")
+        .attr("points", "320,510 300,210,123,234")
+        .attr("fill", "brown")
+        .attr("stroke-width", 2)
+        .attr("class", "polygon");
+
+</script>
 </body>
 </html>
