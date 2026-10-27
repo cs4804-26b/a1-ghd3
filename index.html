@@ -7,13 +7,110 @@
 <body>
   <div id="container"></div>
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-  <script>
+  <script type="module">
     console.log("d3 version", d3.version); // test that d3 loaded
+    
     // Add an SVG
-    // Add Rectangles
-    // Add Circles
-    // Add Lines
-    // Add Polygons
+    const svg = d3.select("#container")
+      .append("svg")
+      .attr("width", 800)
+      .attr("height", 500);
+    
+    // Add Rectangles (night sky background)
+    svg.append("rect")
+      .attr("width", 800)
+      .attr("height", 500)
+      .attr("fill", "#0f172a");
+
+    // Add Polygons (mountains)
+    svg.append("polygon")
+      .attr("points", "0,400 150,320 300,450 500,350 700,420 800,380 800,500 0,500")
+      .attr("fill", "#1e293b");
+
+    // Add Circles (stars)
+    
+    // Define coordinates for constellations
+    const constellations = [
+      { 
+        name: "Ursa Major (Big Dipper)",
+        lines: [
+          // Bowl
+          { x1: 150, y1: 150, x2: 220, y2: 150 },
+          { x1: 220, y1: 150, x2: 230, y2: 210 },
+          { x1: 230, y1: 210, x2: 160, y2: 220 },
+          { x1: 160, y1: 220, x2: 150, y2: 150 },
+          // Handle
+          { x1: 220, y1: 150, x2: 270, y2: 130 },
+          { x1: 270, y1: 130, x2: 320, y2: 110 },
+          { x1: 320, y1: 110, x2: 360, y2: 130 }],
+        stars: [
+          { cx: 150, cy: 150, r: 5 }, { cx: 220, cy: 150, r: 5 },
+          { cx: 230, cy: 210, r: 5 }, { cx: 160, cy: 220, r: 5 },
+          { cx: 270, cy: 130, r: 5 }, { cx: 320, cy: 110, r: 5 },
+          { cx: 360, cy: 130, r: 6 }]
+      },
+      { 
+        name: "Cassiopeia",
+        lines: [
+          { x1: 450, y1: 120, x2: 490, y2: 100 },
+          { x1: 490, y1: 100, x2: 530, y2: 130 },
+          { x1: 530, y1: 130, x2: 570, y2: 100 },
+          { x1: 570, y1: 100, x2: 610, y2: 130 }],
+        stars: [
+          { cx: 450, cy: 120, r: 5 }, { cx: 490, cy: 100, r: 6 },
+          { cx: 530, cy: 130, r: 5 }, { cx: 570, cy: 100, r: 6 },
+          { cx: 610, cy: 130, r: 5 }]
+      },
+    ];
+
+    // Stars in background
+    const backgroundStars = [
+      { cx: 50, cy: 50, r: 2 }, { cx: 380, cy: 80, r: 1.5 },
+      { cx: 750, cy: 80, r: 2 }, { cx: 400, cy: 280, r: 2 },
+      { cx: 100, cy: 250, r: 1.5 }, { cx: 580, cy: 260, r: 2 }
+    ];
+    
+    svg.selectAll("circle")
+      .data(backgroundStars)
+      .enter()
+      .append("circle")
+      .attr("cx", d => d.cx)
+      .attr("cy", d => d.cy)
+      .attr("r", d => d.r)
+      .attr("fill", "#64748b");
+
+    // 
+    svg.selectAll(".constellation")
+      .data(constellations)
+      .enter()
+      .append("g")
+      .each(function(d) {
+        const g = d3.select(this);
+
+        // Draw lines between stars
+        g.selectAll("line")
+          .data(d.lines)
+          .enter()
+          .append("line")
+          .attr("x1", l => l.x1)
+          .attr("y1", l => l.y1)
+          .attr("x2", l => l.x2)
+          .attr("y2", l => l.y2)
+          .attr("stroke", "#93c5fd")
+          .attr("stroke-width", 2)
+          .attr("stroke-dasharray", "3");
+
+        // Draw constellation stars
+        g.selectAll("circle")
+          .data(d.stars)
+          .enter()
+          .append("circle")
+          .attr("cx", s => s.cx)
+          .attr("cy", s => s.cy)
+          .attr("r", s => s.r)
+          .attr("fill", "#ffffff");
+      });
+
   </script>
 </body>
 </html>
