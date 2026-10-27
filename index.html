@@ -3,17 +3,197 @@
 <head>
   <meta charset="utf-8">
   <title>A1: Hello World, GitHub and d3</title>
+    <style>
+      html, body {
+        margin: 0;
+        height: 100%;
+        background: #0a0e3b;
+      }
+      svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+      #container {
+        height: 100%;
+      }
+      .pulse {
+        transform-origin: 500px 175px;
+        animation: pulse 3s ease-in-out infinite alternate;
+      }
+      .default {
+        opacity: 0.7;
+        transition: opacity 0.2s ease;
+      }
+      .default:hover {
+        opacity: 1.0;
+      }
+      @keyframes pulse {
+        from { transform: scale(1); }
+        to   { transform: scale(1.08); }
+      }
+    .spin {
+      transform-origin: 500px 175px;
+      animation: spin 20s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+  
+
 </head>
 <body>
   <div id="container"></div>
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script>
     console.log("d3 version", d3.version); // test that d3 loaded
-    // Add an SVG
-    // Add Rectangles
-    // Add Circles
-    // Add Lines
-    // Add Polygons
+
+    const W = 1000, H = 600;
+
+    const Colors = {
+      cream: "#eceddf", night: "#0a0e3b", orange: "#ca452a",
+      yellow: "#f3b932", purple: "#575df1", darkorange: "#cb6d0b",
+      cyan: "#3d7b70", indigo: "#1848c6", teal: "#1f8a8a",
+      blue: "#2447c7", red: "#e63a2e", black: "#171717",
+    };
+
+    const svg = d3.select("#container")
+      .append("svg")
+      .attr("viewBox", `0 0 ${W} ${H}`)
+      .attr("preserveAspectRatio", "xMidYMax slice");
+
+    svg.append("rect")
+      .attr("width", W)
+      .attr("height", H)
+      .attr("fill", Colors.night);
+
+    
+    const blocks = [
+      { x: 50,   y: 20, w: 200, h: 150, color: Colors.teal, },
+      { x: 480, y: 150, w: 60,  h: 200, color: Colors.teal },
+      { x: 820, y: 50, w: 80,  h: 150, color: Colors.teal },
+      { x: 240, y: 300, w: 120, h: 30,  color: Colors.teal },
+      { x: 70, y: 30, w: 250, h: 10,  color: Colors.blue },
+      { x: 600, y: 100, w: 70, h: 50,  color: Colors.blue },
+      { x: 800, y: 20, w: 100, h: 20,  color: Colors.blue },
+      { x: 400, y: 200, w: 100, h: 20,  color: Colors.blue }
+    ];
+
+    //rectangles
+    svg.selectAll("rect.block")
+      .data(blocks)
+      .join("rect")
+      .attr("class", "block")
+      .attr("x", d => d.x)
+      .attr("y", d => d.y)
+      .attr("width", d => d.w)
+      .attr("height", d => d.h)
+      .attr("fill", d => d.color)
+      .attr("opacity", 0.7);
+    
+    const mountains = [
+      { x: 0,   w: 400, h: 200 },
+      { x: 200, w: 500, h: 250 },
+      { x: 500, w: 300, h: 150 },
+      { x: 650, w: 350, h: 175 }
+    ];
+
+
+    //polygons
+    svg.selectAll("polygon.mountain")
+      .data(mountains)
+      .join("polygon")
+      .attr("class", "mountain")
+      .attr("points", d => [
+        [d.x, H], //bottom left 
+        [d.x + d.w / 2, H - d.h], //peak
+        [d.x + d.w, H] //bottom right
+    ])
+    .attr("fill", Colors.purple)
+    .attr("opacity", 0.6)
+    .attr("class", "default");
+
+    //lines
+    svg.append("line")
+      .attr("x1", 0)
+      .attr("y1", 100)
+      .attr("x2", 1000)
+      .attr("y2", 300)
+      .attr("stroke", Colors.yellow)
+      .attr("stroke-width", 2);
+    
+    svg.append("line")
+      .attr("x1", 0)
+      .attr("y1", 400)
+      .attr("x2", 1000)
+      .attr("y2", 100)
+      .attr("stroke", Colors.yellow)
+      .attr("stroke-width", 0.5);
+
+      svg.append("line")
+      .attr("x1", 700)
+      .attr("y1", 0)
+      .attr("x2", 1000)
+      .attr("y2", 400)
+      .attr("stroke", Colors.red)
+      .attr("stroke-width", 2);
+    
+    //circles
+    svg.append("circle")
+      .attr("class", "pulse")
+      .attr('cx', 500)
+      .attr('cy', 175)
+      .attr('r', 120)
+      .attr('opacity', 0.3)
+      .attr('fill', Colors.indigo);
+
+    svg.append("circle")
+      .attr("class", "pulse")
+      .attr('cx', 500)
+      .attr('cy', 175)
+      .attr('r', 80)
+      .attr('fill', Colors.cream);
+
+    svg.append("circle")
+      .attr('cx', 500)
+      .attr('cy', 175)
+      .attr('r', 70)
+      .attr('fill', Colors.black);
+
+    svg.append("circle")
+      .attr("class", "pulse")
+      .attr('cx', 500)
+      .attr('cy', 175)
+      .attr('r', 140)
+      .attr('fill', 'none')
+      .attr('stroke-width', 2)
+      .attr('stroke', Colors.red);
+
+    svg.append("circle")
+      .attr("class", "pulse")
+      .attr('cx', 500)
+      .attr('cy', 175)
+      .attr('r', 160)
+      .attr('fill', 'none')
+      .attr('stroke-width', 2)
+      .attr('stroke', Colors.blue);
+
+    const g = svg.append("g")
+
+    const circle = g.append("circle")
+      .attr("class", "spin")
+      .attr('cx', 500)
+      .attr('cy', 175)
+      .attr('r', 120)
+      .attr('fill', "none")
+      .attr("stroke", Colors.yellow)
+      .attr("stroke-dasharray", "4, 12");
+
+
+
+
+    
   </script>
 </body>
 </html>
