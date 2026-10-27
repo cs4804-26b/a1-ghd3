@@ -3,17 +3,215 @@
 <head>
   <meta charset="utf-8">
   <title>A1: Hello World, GitHub and d3</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #f4f4f8;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      color: #25324b;
+    }
+
+    h1 {
+      margin-top: 30px;
+    }
+
+    button {
+      padding: 12px 20px;
+      background-color: #26324b;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 15px;
+    }
+
+    button:hover {
+      background-color: #44557a;
+    }
+
+    svg {
+      display: block;
+      width: 95%;
+      max-width: 900px;
+      height: auto;
+      margin: 10px auto 30px;
+      border-radius: 12px;
+    }
+  </style>
 </head>
 <body>
+  
+  <h1>Day/Night City Skyline</h1>
+  <p>Click the button to change between sunset and night.</p>
+
+  <button id="toggle">Switch to Night</button>
+
   <div id="container"></div>
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script>
     console.log("d3 version", d3.version); // test that d3 loaded
     // Add an SVG
-    // Add Rectangles
-    // Add Circles
-    // Add Lines
-    // Add Polygons
+    const svg = d3.select("#container")
+      .append("svg")
+      .attr("viewBox", "0 0 900 500")
+      .attr("role", "img")
+      .attr("aria-label", "Day/Night city skyline");
+    
+    // Add Sky (Rectangle)
+    const sky = svg.append("rect")
+      .attr("width", 900)
+      .attr("height", 500)
+      .attr("fill", "#f7b89c");
+
+    // Add Stars (Polygon)
+    function getStarPoints(centerX, centerY, outerRadius, innerRadius) {
+      let points = [];
+      let angle = -Math.PI / 2; 
+      let step = Math.PI / 5;  
+
+      for (let i = 0; i < 10; i++) {
+        let radius = i % 2 === 0 ? outerRadius : innerRadius;
+        let x = centerX + Math.cos(angle) * radius;
+        let y = centerY + Math.sin(angle) * radius;
+        points.push(`${x},${y}`);
+        angle += step;
+      }
+
+      return points.join(" ");
+    }
+
+
+    const starPositions = [
+      {x: 75, y: 75},
+      {x: 160, y: 125},
+      {x: 235, y: 60},
+      {x: 325, y: 150},
+      {x: 410, y: 75},
+      {x: 510, y: 130},
+      {x: 605, y: 55},
+      {x: 780, y: 65},
+      {x: 850, y: 145}
+    ];
+
+    const stars = svg.selectAll(".star")
+      .data(starPositions)
+      .enter()
+      .append("polygon")
+      .attr("class", "star")
+      .attr("points", d => getStarPoints(d.x, d.y, 7, 3))
+      .attr("fill", "white")
+      .attr("opacity", 0);
+    
+    // Add Sun (Circle)
+    const sun = svg.append("circle")
+      .attr("cx", 720)
+      .attr("cy", 135)
+      .attr("r", 55)
+      .attr("fill", "#ffde77");
+
+    // Add Mountains (SVG Path)
+    const mountains = svg.append("path")
+      .attr("d", "M0 420 L170 285 L340 420 L515 270 L680 420 L820 320 L900 390 L900 500 L0 500 Z")
+      .attr("fill", "#df8798");
+
+    // Add Buildings (Rectangles)
+    const buildings = [
+      {x: 45, y: 345, width: 130, height: 120},
+      {x: 190, y: 285, width: 110, height: 180},
+      {x: 315, y: 330, width: 120, height: 135},
+      {x: 450, y: 245, width: 145, height: 220},
+      {x: 610, y: 310, width: 115, height: 155},
+      {x: 740, y: 275, width: 125, height: 190}
+    ];
+    
+    const buildingShapes = svg.selectAll(".building")
+      .data(buildings)
+      .enter()
+      .append("rect")
+      .attr("class", "building")
+      .attr("x", d => d.x)
+      .attr("y", d => d.y)
+      .attr("width", d => d.width)
+      .attr("height", d => d.height)
+      .attr("fill", "#364763");
+
+    // Add Windows (Rectangles)
+    const windowData = [];
+
+    buildings.forEach(b => {
+      for (let x = b.x + 16; x < b.x + b.width - 10; x += 29) {
+        for (let y = b.y + 18; y < 440; y += 32) {
+          windowData.push({x: x, y: y});
+        }
+      }
+    });
+
+    const windowShapes = svg.selectAll(".window")
+      .data(windowData)
+      .enter()
+      .append("rect")
+      .attr("class", "window")
+      .attr("x", d => d.x)
+      .attr("y", d => d.y)
+      .attr("width", 12)
+      .attr("height", 17)
+      .attr("fill", "#b9c6d7");
+
+    // Add Road (Rectangle)
+    svg.append("rect")
+      .attr("x", 0)
+      .attr("y", 465)
+      .attr("width", 900)
+      .attr("height", 35)
+      .attr("fill", "#202c40");
+
+    // Add Road Markings (Rectangles)
+    svg.selectAll(".road-line")
+      .data([70, 240, 410, 580, 750])
+      .enter()
+      .append("line")
+      .attr("x1", d => d)
+      .attr("y1", 485)
+      .attr("x2", d => d + 85)
+      .attr("y2", 485)
+      .attr("stroke", "#fbe0a3")
+      .attr("stroke-width", 4);
+
+    // Day/Night Transition
+    let isNight = false;
+
+    d3.select("#toggle").on("click", function() {
+
+      isNight = !isNight;
+
+      sky.transition().duration(1000)
+        .attr("fill", isNight ? "#111a37" : "#f7b89c");
+
+      stars.transition().duration(1000)
+        .attr("opacity", isNight ? 1 : 0);
+
+      sun.transition().duration(1000)
+        .attr("cy", isNight ? 95 : 135)
+        .attr("r", isNight ? 36 : 55)
+        .attr("fill", isNight ? "#ecf1ff" : "#ffde77");
+
+      mountains.transition().duration(1000)
+        .attr("fill", isNight ? "#263154" : "#df8798");
+
+      buildingShapes.transition().duration(1000)
+        .attr("fill", isNight ? "#131d32" : "#364763");
+
+      windowShapes.transition().duration(1000)
+        .attr("fill", isNight ? "#ffe49c" : "#b9c6d7");
+
+      d3.select(this).text(
+        isNight ? "Switch to Sunset" : "Switch to Night"
+      );
+
+    });
+
   </script>
 </body>
 </html>
