@@ -1,19 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>A1: Hello World, GitHub and d3</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mountain Sunset</title>
+
+  <style>
+    body {
+      background: #f5dad1;
+      text-align: center;
+      font-family: Arial, sans-serif;
+    }
+
+    svg {
+      display: block;
+      width: 90%;
+      max-width: 800px;
+      margin: 20px auto;
+      border-radius: 12px;
+    }
+
+    input {
+      width: 220px;
+      max-width: 80%;
+    }
+  </style>
 </head>
+
 <body>
-  <div id="container"></div>
+  <h1>Mountain Sunset</h1>
+
+  <svg
+    viewBox="0 0 800 500"
+    aria-label="Interactive sunset over mountains and a lake">
+  </svg>
+
+  <label for="time">Change the time:</label>
+  <input id="time" type="range" min="16" max="20" value="18">
+  <p id="time-label">It is currently 6PM.</p>
+
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+
   <script>
-    console.log("d3 version", d3.version); // test that d3 loaded
-    // Add an SVG
-    // Add Rectangles
-    // Add Circles
-    // Add Lines
-    // Add Polygons
+    const svg = d3.select("svg");
+    let currentTime = 18;
+    
+
+    const sky = svg.append("rect")
+    .attr("width", 800)
+    .attr("height", 500)
+    .attr("fill", "#f4a582");
+
+    const sun = svg.append("circle")
+    .attr("cx", 550)
+    .attr("cy", 190)
+    .attr("r", 65)
+    .attr("fill", "#ffe29a")
+    .style("cursor", "pointer")
+    .on("click", function() {
+      alert("It is currently " + (currentTime - 12) + "PM.");
+    });
+
+    const sunLabel = svg.append("text")
+    .attr("x", 550)
+    .attr("y", 190)
+    .attr("text-anchor", "middle")
+    .attr("dominant-baseline", "middle")
+    .attr("fill", "#604c70")
+    .style("pointer-events", "none")
+    .text("Click me");
+
+    svg.append("polygon")
+    .attr("points", "0,350 180,120 380,350 570,180 800,350")
+    .attr("fill", "#947493");
+
+    svg.append("polygon")
+    .attr("points", "0,350 260,230 430,350 680,240 800,350")
+    .attr("fill", "#604c70");
+
+    svg.append("rect")
+    .attr("y", 350)
+    .attr("width", 800)
+    .attr("height", 150)
+    .attr("fill", "#816b97");
+
+    svg.append("ellipse")
+    .attr("cx", 200)
+    .attr("cy", 90)
+    .attr("rx", 80)
+    .attr("ry", 25)
+    .attr("fill", "#ffe5d9");
+
+    svg.append("ellipse")
+    .attr("cx", 350)
+    .attr("cy", 60)
+    .attr("rx", 65)
+    .attr("ry", 20)
+    .attr("fill", "#ffe5d9");
+
+    svg.append("ellipse")
+    .attr("cx", 450)
+    .attr("cy", 120)
+    .attr("rx", 60)
+    .attr("ry", 20)
+    .attr("fill", "#ffe5d9");
+
+    svg.append("ellipse")
+    .attr("cx", 700)
+    .attr("cy", 110)
+    .attr("rx", 75)
+    .attr("ry", 22)
+    .attr("fill", "#ffe5d9");
+
+    for (let i = 0; i < 5; i++) {
+      svg.append("line")
+      .attr("x1", 530 - i * 15)
+      .attr("x2", 570 + i * 15)
+      .attr("y1", 375 + i * 25)
+      .attr("y2", 375 + i * 25)
+      .attr("stroke", "#ffe29a")
+      .attr("stroke-width", 5);
+    }
+    
+    svg.append("path")
+    .attr("d", "M 80 160 Q 95 140 110 160 Q 125 140 140 160")
+    .attr("fill", "none")
+    .attr("stroke", "#604c70")
+    .attr("stroke-width", 3)
+    .attr("stroke-linecap", "round");
+
+    d3.select("#time").on("input", function() {
+      currentTime = Number(this.value);
+      
+      const sunHeight = 90 + (currentTime - 16) * 50;
+      
+      sun.attr("cy", sunHeight);
+      sunLabel.attr("y", sunHeight);
+      
+      if (currentTime === 16) {
+        sky.attr("fill", "#a8d8ef");
+      } else if (currentTime === 17) {
+        sky.attr("fill", "#f8c49b");
+      } else if (currentTime === 18) {
+        sky.attr("fill", "#f4a582");
+      } else if (currentTime === 19) {
+        sky.attr("fill", "#b17a99");
+      } else {
+        sky.attr("fill", "#343b65");
+      }
+      
+      d3.select("#time-label")
+      .text("It is currently " + (currentTime - 12) + "PM.")
+    });
+    
+
   </script>
 </body>
 </html>
