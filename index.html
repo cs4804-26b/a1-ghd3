@@ -8,12 +8,119 @@
   <div id="container"></div>
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script>
-    console.log("d3 version", d3.version); // test that d3 loaded
+    console.log("d3 version", d3.version);
+
     // Add an SVG
-    // Add Rectangles
-    // Add Circles
-    // Add Lines
-    // Add Polygons
+    const width = 700;
+    const height = 400;
+    const svg = d3.select("#container")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height);
+
+    // Road
+    svg.append("rect")
+      .attr("x", 0)
+      .attr("y", 320)
+      .attr("width", 700)
+      .attr("height", 80)
+      .attr("fill", "dimgray");
+
+    // Car body
+    svg.append("rect")
+      .attr("x", 210)
+      .attr("y", 240)
+      .attr("width", 250)
+      .attr("height", 70)
+      .attr("fill", "red")
+      .attr("stroke", "black")
+      .attr("stroke-width", 2);
+
+    // Wheels
+    svg.append("circle")
+      .attr("cx", 240)
+      .attr("cy", 300)
+      .attr("r", 30)
+      .attr("fill", "black");
+
+    svg.append("circle")
+      .attr("cx", 420)
+      .attr("cy", 300)
+      .attr("r", 30)
+      .attr("fill", "black");
+
+    // Wheel centers
+    svg.append("circle")
+      .attr("cx", 240)
+      .attr("cy", 300)
+      .attr("r", 13)
+      .attr("fill", "lightgray");
+
+    svg.append("circle")
+      .attr("cx", 420)
+      .attr("cy", 300)
+      .attr("r", 13)
+      .attr("fill", "lightgray");
+
+    // Roof of the car
+    svg.append("polygon")
+      .attr("points", "230,240 280,180 400,180 450,240")
+      .attr("fill", "red")
+      .attr("stroke", "black")
+      .attr("stroke-width", 2);
+
+    // Back window
+    svg.append("rect")
+      .attr("x", 280)
+      .attr("y", 195)
+      .attr("width", 50)
+      .attr("height", 35)
+      .attr("fill", "lightblue")
+      .attr("stroke", "black")
+      .attr("stroke-width", 2);
+
+    // Front window
+    svg.append("rect")
+      .attr("x", 345)
+      .attr("y", 195)
+      .attr("width", 50)
+      .attr("height", 35)
+      .attr("fill", "lightblue")
+      .attr("stroke", "black")
+      .attr("stroke-width", 2);
+
+    // Front windshield
+    svg.append("polygon")
+      .attr("points", "400,190 440,230 400,230")
+      .attr("fill", "lightblue")
+      .attr("stroke", "black")
+      .attr("stroke-width", 2);
+
+    // Road markings
+    svg.append("line")
+      .attr("x1", 30)
+      .attr("y1", 360)
+      .attr("x2", 120)
+      .attr("y2", 360)
+      .attr("stroke", "yellow")
+      .attr("stroke-width", 5);
+
+    svg.append("line")
+      .attr("x1", 550)
+      .attr("y1", 360)
+      .attr("x2", 640)
+      .attr("y2", 360)
+      .attr("stroke", "yellow")
+      .attr("stroke-width", 5);
+
+    svg.append("line")
+      .attr("x1", 280)
+      .attr("y1", 360)
+      .attr("x2", 380)
+      .attr("y2", 360)
+      .attr("stroke", "yellow")
+      .attr("stroke-width", 5);
+
   </script>
 </body>
 </html>
