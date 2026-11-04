@@ -1,19 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
+  
 <head>
   <meta charset="utf-8">
   <title>A1: Hello World, GitHub and d3</title>
 </head>
+
 <body>
+
+  <button id="uploadButton" type="button">Upload Any Image</button>
+  <input type="file" id="imageInput" accept="image/*" hidden/>
+
   <div id="container"></div>
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script>
     console.log("d3 version", d3.version); // test that d3 loaded
+
     // Add an SVG
+    const svg = d3.select("#container").append("svg").attr("width", 1700).attr("height", 1000);
+
+    // Group all parts of the person so they can move together
+    const person = svg.append("g").attr("id", "person");
+
     // Add Rectangles
+    //body
+    person.append("rect").attr("x", 450).attr("y", 570).attr("width", 100).attr("height", 200).attr("fill", "blue").attr("stroke", "red").attr("stroke-width", 5);
+    //image display box at the top right
+    svg.append("rect").attr("x", 1200).attr("y", 60).attr("width", 420).attr("height", 300).attr("rx", 15).attr("fill", "white").attr("stroke", "#64748b").attr("stroke-width", 5);    
+    
+    //image frame, don't remove this, it is used to display the image
+    const image = svg.append("image").attr("x", 1215).attr("y", 75).attr("width", 390).attr("height", 270).attr("preserveAspectRatio", "xMidYMid meet").style("display", "none");
+    //will be removed after placing an image
+    const placeholder = svg.append("text").attr("x", 1410).attr("y", 117).attr("text-anchor", "middle").attr("font-size", 25).attr("font-weight", "bold").attr("fill", "black").text("Great Person Image!");
+
+
     // Add Circles
+    //head
+    person.append("circle").attr("cx", 510).attr("cy", 510).attr("r", 51) .attr("fill", "#FFFFB8").attr("stroke", "red").attr("stroke-width", 5);
+    //left eye
+    person.append("circle").attr("cx", 493).attr("cy", 500).attr("r", 4).attr("fill", "black");
+    //right eye
+    person.append("circle").attr("cx", 527).attr("cy", 500).attr("r", 4).attr("fill", "black");
+    
+
     // Add Lines
+    //base line/ground
+    svg.append("line").attr("x1", 10).attr("y1", 990).attr("x2", 1700).attr("y2", 990).attr("stroke", "black").attr("stroke-width", 17);
+    //starting left leg
+    person.append("line").attr("x1", 490).attr("y1", 770).attr("x2", 480).attr("y2", 960).attr("stroke", "black").attr("stroke-width", 20);
+    //starting right leg
+    person.append("line").attr("x1", 530).attr("y1", 770).attr("x2", 540).attr("y2", 960).attr("stroke", "black").attr("stroke-width", 20);
+    //starting left arm
+    const LeftArm = person.append("line").attr("x1", 450).attr("y1", 600).attr("x2", 400).attr("y2", 800).attr("stroke", "yellow").attr("stroke-width", 10);
+    //starting right arm
+    const RightArm = person.append("line").attr("x1", 550).attr("y1", 600).attr("x2", 600).attr("y2", 800).attr("stroke", "yellow").attr("stroke-width", 10);
+
+
     // Add Polygons
+    //pocket
+    person.append("polygon").attr("points", "550,600 510,600 510,650 550,650").attr("fill", "green").attr("stroke", "red").attr("stroke-width", 5);
+    //starting left feet
+    person.append("polygon").attr("points", "490,960 470,960 470,980 510,980").attr("fill", "black").attr("stroke", "red").attr("stroke-width", 5);
+    //starting right feet
+    person.append("polygon").attr("points", "550,960 530,960 530,980 570,980").attr("fill", "black").attr("stroke", "red").attr("stroke-width", 5);
+  
+
+    //mouth
+    person.append("path").attr("d", "M490,525 Q510,545 530,525").attr("fill", "none").attr("stroke", "black").attr("stroke-width", 4);
+
+  
+    //movement
+    //repeatedly raise and lower each arm
+    function animateArm(arm, raisedX, raisedY,loweredX, loweredY) {
+      function repeat() {
+        arm.transition()
+          .duration(800)
+          .ease(d3.easeCubicInOut)
+          .attr("x2", raisedX).attr("y2", raisedY)
+          .transition()
+          .duration(800)
+          .ease(d3.easeCubicInOut)
+          .attr("x2", loweredX).attr("y2", loweredY)
+          .on("end", repeat);
+      }
+
+      repeat();
+    }
+
+    //both arms praise the image by waving upward
+    animateArm(LeftArm, 350, 420, 400, 800);
+    animateArm(RightArm, 650, 420, 600, 800);
+    
+
+    //open the file picker when the button is clicked
+    d3.select("#uploadButton").on("click", function () {
+      document.getElementById("imageInput").click();
+    });
+
+    //display the selected image
+    d3.select("#imageInput").on("change", function (event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      //ensure the selected file is an image
+      if (!file.type.startsWith("image/")) {
+        alert("PLEASE select an image file:)");
+        return;
+      }
+
+      const imageURL = URL.createObjectURL(file); //create a temporary URL for the selected image
+      image.attr("href", imageURL).style("display", "block"); //display the selected image in the SVG box
+      placeholder.style("display", "none"); //hide the placeholder text after image is displayed
+
+      d3.select("#uploadButton").style("display", "none");  //hide the upload button after a successful upload
+    });
+
+    //keyboard controls for moving the person left and right
+    let personX = 0;
+
+    const moveStep = 20;  //distance moved per key press
+    const boardWidth = 1700;  //width of the SVG board
+
+    const personMinX = 340; //horizontal boundaries of the person
+    const personMaxX = 680;
+
+    window.addEventListener("keydown", function (event) {
+      const key = event.key.toLowerCase();
+
+      // Move left with A or Left Arrow
+      if (key === "a" || key === "arrowleft") {
+        event.preventDefault();
+        personX -= moveStep;
+      }
+      // Move right with D or Right Arrow
+      else if (key === "d" || key === "arrowright") {
+        event.preventDefault();
+        personX += moveStep;
+      }
+      else {
+        return;
+      }
+
+      personX = Math.max(-personMinX, Math.min(boardWidth - personMaxX, personX));  //check if person is Out Of Bounds
+
+      person.attr("transform", `translate(${personX}, 0)`); //move the entire person horizontally
+    });
   </script>
+  
+  <style>
+    #uploadButton {
+      position: absolute;
+      left: 1260px;
+      top: 220px;
+
+      padding: 8px 16px;
+      background-color: #006767;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #uploadButton:hover {
+      background-color: #676700;
+    }
+  </style>
 </body>
 </html>
