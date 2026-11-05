@@ -33,7 +33,7 @@ GitHub Details
 - Fork the GitHub Repository for Assignment 1. You now have a copy associated with your username.
 - Make changes to index.html to fulfill the project requirements. 
 - Turn on GitHub Pages for your fork: Settings → Pages → Build and deployment → Source: "Deploy from a branch", Branch: `main`, folder `/ (root)`. See [Configuring a publishing source](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) if you need help. Spend some time learning this if you're new!
-- Edit the README.md with a link to your GitHub Pages site "https://YourUsernameGoesHere.github.io/a1-ghd3/".
+- Edit the README.md with a link to your GitHub Pages site "https://aravindsathappann.github.io/a1-ghd3/".
 
 Submission Details
 ---
@@ -78,8 +78,16 @@ Below are some, but not necessarily all, of the key points we will consider duri
     - A working link to the hosted files (your GitHub Pages url)  
     - Section for Technical and Design Achievements
 
+<img width="1736" height="1222" alt="image" src="https://github.com/user-attachments/assets/ca194117-7b85-4f5d-b073-d1c282f2e0b6" />
+
+
 Technical Achievement Description -- 12  
+
+I used D3.js and JavaScript to create multiple SVG shapes, including circles, rectangles, lines, and polygons. I also implemented an interactive feature where if users click on the sun, it changes colors from yellow and orange 
+
 Design Achievement Description -- 12
+
+I designed a  house visualization using different shapes and colors to create a normal house scene. I used a light blue background to represent the sky, a brown roof, and a green ground line to make the visualization more easy on the eye. 
 
 Remember, it is up to *you* to define what constitutes a technical and design achievements.
 Be ambitious as these are designed to allow you to shape your learning.
