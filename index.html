@@ -9,11 +9,175 @@
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script>
     console.log("d3 version", d3.version); // test that d3 loaded
-    // Add an SVG
-    // Add Rectangles
+
+    const svg = d3.select("#container")
+      .append("svg")
+      .attr("width", 600)
+      .attr("height", 400);
+
+    // Add Background Stripes
+    const stripeWidth = 50;
+    const numStripes = 600 / stripeWidth;
+    for (let i = 0; i < numStripes; i++) {
+      svg.append("rect")
+        .attr("x", i * stripeWidth)
+        .attr("y", 0)
+        .attr("width", stripeWidth)
+        .attr("height", 400)
+        .attr("fill", i % 2 === 0 ? "#2e7d32" : "#388e3c");
+      }
+
+    // Add Pitch Lines & Boxes (Rectangles)
+      // Add Outer Boundary of the Pitch
+    svg.append("rect")
+      .attr("x", 10)
+      .attr("y", 10)
+      .attr("width", 580)
+      .attr("height", 380)
+      .attr("stroke", "white")
+      .attr("stroke-width", 3)
+      .attr("fill", "none");
+      
+      // Add Left Six-Yard Box
+     svg.append("rect")
+      .attr("x", 10)
+      .attr("y", 90)
+      .attr("width", 100)
+      .attr("height", 220)
+      .attr("stroke", "white")
+      .attr("stroke-width", 3)
+      .attr("fill", "none");  
+
+      // Add Right Six-Yard Box
+     svg.append("rect")
+      .attr("x", 490)
+      .attr("y", 90)
+      .attr("width", 100)
+      .attr("height", 220)
+      .attr("stroke", "white")
+      .attr("stroke-width", 3)
+      .attr("fill", "none");  
+
     // Add Circles
+      // Add Center Circle
+    svg.append("circle")
+      .attr("cx", 300)
+      .attr("cy", 200)
+      .attr("r", 50)
+      .attr("stroke", "white")
+      .attr("stroke-width", 3)
+      .attr("fill", "none");
+
+      // Add Center Spot
+    svg.append("circle")
+      .attr("cx", 300)
+      .attr("cy", 200)
+      .attr("r", 4)
+      .attr("fill", "white");
+
+      // Add Left Penalty Spot
+    svg.append("circle")
+      .attr("cx", 75)
+      .attr("cy", 200)
+      .attr("r", 4)
+      .attr("fill", "white");
+
+      // Add Right Penalty Spot
+    svg.append("circle")
+      .attr("cx", 525)
+      .attr("cy", 200)
+      .attr("r", 4)
+      .attr("fill", "white");
+
     // Add Lines
+      // Add Center Line
+    svg.append("line")
+      .attr("x1", 300)
+      .attr("y1", 10)
+      .attr("x2", 300)
+      .attr("y2", 390)
+      .attr("stroke", "white")
+      .attr("stroke-width", 3);
+
     // Add Polygons
+      // Add Penalty Area Left (Polygon)
+    svg.append("polygon")
+      .attr("points", "10, 150 40, 150 40, 250 10, 250")
+      .attr("stroke", "white")
+      .attr("stroke-width", 3)
+      .attr("fill", "none");
+
+      // Add Penalty Area Right (Polygon)
+    svg.append("polygon")
+      .attr("points", "590, 150 560, 150 560, 250 590, 250")
+      .attr("stroke", "white")
+      .attr("stroke-width", 3)
+      .attr("fill", "none");
+
+    // Ball Things
+      // Add Driven Ball and Trail
+      const ballGroup = svg.append("g")
+        .attr("transform", "translate(40, 200)");
+
+      // Triangle Trail
+    ballGroup.append("polygon")
+      .attr("points", "0, -7 0, 7 -40, 0") // Used Gemini to help orient the triangle in the correct direction
+      .attr("fill", "rgba(255, 255, 255, 0.5)");
+      // Input: When making a triangle using this code: .attr("points", "0, -7 0, 7 -40, 0"), the triable is oriented in the wrong direction (pointed side facing right).
+      // How do I flip the triangle so that the pointed side faces left instead of right?
+      // Output: 1. Pointed side facing LEFT (Base on the right)
+      // If you want the flat vertical base on the right and the point stretching to the left:
+      // .attr("points", "0, -7  0, 7  -40, 0")
+
+      // Add Ball 
+    ballGroup.append("circle")
+    .attr("cx", 0)
+    .attr("cy", 0)
+    .attr("r", 8)
+    .attr("fill", "white");
+
+      // Animate the ball moving across the pitch
+    function moveBall() {
+      ballGroup.transition()
+        .duration(1800)
+        .ease(d3.easeCubicOut) // Fast first, then slows down
+        .attr("transform", "translate(560, 200) rotate(0)")
+        .transition()
+        .duration(0) // Immediate rotation
+        .attr("transform", "translate(560, 200) rotate(180)") // Flip  trail backwards
+        .transition()
+        .duration(1800)
+        .ease(d3.easeCubicOut) // Move back to the left
+        .attr("transform", "translate(40, 200) rotate(180)")
+        .transition()
+        .duration(0) 
+        .attr("transform", "translate(40, 200) rotate(0)") // Reset rotation
+        .on("end", moveBall);
+
+      // Animate trail length
+      ballGroup.select("polygon")
+        .transition()
+        .duration(1800)
+        .ease(d3.easeLinear)
+        .attr("points", "0, -7 0, 7 0, 0") // Shrink the trail
+        .transition()
+        .duration(0)
+        .ease(d3.easeLinear)
+        .attr("points", "0, -7 0, 7 -40, 0") // Reset the trail
+        .transition()
+        .duration(1800)
+        .ease(d3.easeLinear)
+        .attr("points", "0, -7 0, 7 0, 0") // Shrink the trail
+        .transition()
+        .duration(0)
+        .ease(d3.easeLinear)
+        .attr("points", "0, -7 0, 7 -40, 0") // Reset the trail
+        .transition()
+        .duration(1800)
+        .ease(d3.easeLinear)
+        .on("end", moveBall);
+    }
+    moveBall();
   </script>
 </body>
 </html>
